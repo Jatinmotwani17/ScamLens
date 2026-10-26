@@ -80,11 +80,15 @@ jobs:
           python -m src.build_dataset
           python -m src.data_checks
 
-      - name: Train baselines + evaluate
+      # NOTE: this job deliberately does NOT re-run src.calibrate. Re-fitting the
+      # three operating points on CI would overwrite the shipped thresholds, so
+      # the "regression" check would actually be measuring a fresh fit on freshly
+      # downloaded data. The gate must hold the committed thresholds fixed and
+      # re-measure the model against them.
+      - name: Train baselines + evaluate at the shipped thresholds
         run: |
           python -m src.baselines
           python -m src.evaluate
-          python -m src.calibrate --model verdict_lr_plus
 
       - name: Regression gate (test_b F1 + real-ham FPR)
         run: python scripts/ci_gate.py --min-testb-f1 0.90 --max-ham-fpr 0.15
