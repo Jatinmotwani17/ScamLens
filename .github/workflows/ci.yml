@@ -6,10 +6,13 @@ on:
   pull_request:
   workflow_dispatch:
 
+# Both jobs rebuild the corpus locally instead of uploading it as an artifact:
+# `data/processed/*.parquet` contains real message text, and this repo's rule is
+# that message text is never stored outside the machine that built it.
 jobs:
   test:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -28,13 +31,30 @@ jobs:
       - name: PII / secret scan
         run: python scripts/scan_repo.py
 
+      # The test suite exercises real artefacts (splits, joblib bundles, the
+      # frozen probes), and none of them are committed. Build them first.
+      - name: Build data
+        run: |
+          python -m src.synth.generate
+          python -m src.synth.safe_v2
+          python -m src.external_data
+          python -m src.build_dataset
+          python -m src.data_checks
+
+      - name: Train + calibrate
+        run: |
+          python -m src.baselines
+          python -m src.calibrate --model verdict_lr_plus
+          python -m src.suspicious
+          python -m src.nn_sim
+
       - name: Unit tests
         run: python -m pytest tests -q
 
   eval-gate:
     # Heavy job: rebuilds the corpus and the model, then enforces the regression
-    # gate. It is a separate job so a data-fetch failure cannot mask test
-    # results (and vice versa).
+    # gate. Separate from `test` so a data-fetch failure is clearly attributable
+    # to the data step rather than looking like a test failure.
     runs-on: ubuntu-latest
     timeout-minutes: 45
     needs: test
