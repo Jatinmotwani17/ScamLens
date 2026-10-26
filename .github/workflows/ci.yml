@@ -1,0 +1,70 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install (CPU torch)
+        run: |
+          python -m pip install --upgrade pip
+          pip install --index-url https://download.pytorch.org/whl/cpu torch
+          pip install -r requirements.txt
+          pip install "fastapi>=0.110" "uvicorn[standard]>=0.29"
+
+      - name: PII / secret scan
+        run: python scripts/scan_repo.py
+
+      - name: Unit tests
+        run: python -m pytest tests -q
+
+  eval-gate:
+    # Heavy job: rebuilds the corpus and the model, then enforces the regression
+    # gate. It is a separate job so a data-fetch failure cannot mask test
+    # results (and vice versa).
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install (CPU torch)
+        run: |
+          python -m pip install --upgrade pip
+          pip install --index-url https://download.pytorch.org/whl/cpu torch
+          pip install -r requirements.txt
+
+      - name: Build data (synthetic + real public corpora)
+        run: |
+          python -m src.synth.generate
+          python -m src.synth.safe_v2
+          python -m src.external_data
+          python -m src.build_dataset
+          python -m src.data_checks
+
+      - name: Train baselines + evaluate
+        run: |
+          python -m src.baselines
+          python -m src.evaluate
+          python -m src.calibrate --model verdict_lr_plus
+
+      - name: Regression gate (test_b F1 + real-ham FPR)
+        run: python scripts/ci_gate.py --min-testb-f1 0.90 --max-ham-fpr 0.15

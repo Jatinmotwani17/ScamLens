@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ScamLens - research prototype</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  .hl { background:#fde68a; border-radius:3px; padding:0 2px; }
+  .chip-unvalidated { opacity:.55; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+<div class="max-w-3xl mx-auto px-4 py-6">
+
+  <div class="bg-amber-100 border border-amber-300 rounded-lg p-3 mb-5 text-sm">
+    <b>Research prototype.</b> Trained on English real messages plus synthetic
+    Hinglish. It has not been validated on real Hinglish or on live traffic.
+    Do not rely on it to decide whether a message is a scam.
+  </div>
+
+  <h1 class="text-2xl font-semibold mb-1">ScamLens</h1>
+  <p class="text-slate-600 text-sm mb-5">Paste one SMS / WhatsApp message. Nothing is stored.</p>
+
+  <label class="block text-sm font-medium mb-1" for="text">Message</label>
+  <textarea id="text" rows="5" maxlength="1000"
+    class="w-full border border-slate-300 rounded-lg p-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+    placeholder="e.g. Your HDFC account will be blocked today. Share the OTP you received."></textarea>
+  <div class="text-xs text-slate-500 mt-1"><span id="count">0</span>/1000 characters</div>
+
+  <div class="mt-4">
+    <div class="text-sm font-medium mb-2">Mode</div>
+    <div class="grid sm:grid-cols-3 gap-2" id="modes"></div>
+  </div>
+
+  <div class="mt-4 flex gap-2 items-center">
+    <button id="go" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium">
+      Analyze
+    </button>
+    <span id="status" class="text-xs text-slate-500"></span>
+  </div>
+
+  <div class="mt-6">
+    <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">Examples (synthetic)</div>
+    <div class="flex flex-wrap gap-2" id="examples"></div>
+  </div>
+
+  <div id="result" class="mt-6 hidden">
+    <div class="bg-white border border-slate-200 rounded-xl p-4">
+      <div class="flex items-center gap-3">
+        <span id="badge" class="px-3 py-1 rounded-full text-sm font-semibold"></span>
+        <span id="prob" class="text-sm text-slate-600"></span>
+      </div>
+      <div class="mt-3 h-2 bg-slate-100 rounded">
+        <div id="bar" class="h-2 rounded bg-indigo-500" style="width:0%"></div>
+      </div>
+      <div class="text-xs text-slate-500 mt-1" id="threshold"></div>
+
+      <div class="mt-4">
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-1">Tactic signals</div>
+        <div class="flex flex-wrap gap-2" id="tactics"></div>
+      </div>
+
+      <div class="mt-4">
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-1">Words that moved the score</div>
+        <div class="text-sm leading-6" id="highlights"></div>
+      </div>
+
+      <div class="mt-4">
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-1">Why</div>
+        <ul class="list-disc list-inside text-sm text-slate-700" id="reasons"></ul>
+      </div>
+
+      <div class="mt-4 border-t pt-3">
+        <div class="text-xs uppercase tracking-wide text-amber-700 mb-1">Warnings</div>
+        <ul class="list-disc list-inside text-xs text-amber-800" id="warnings"></ul>
+      </div>
+      <div class="mt-3 text-xs text-slate-500" id="modelinfo"></div>
+    </div>
+  </div>
+
+  <footer class="mt-8 text-xs text-slate-500 border-t pt-4">
+    Not a substitute for verifying with your bank. Report fraud:
+    <a class="underline" href="https://cybercrime.gov.in" target="_blank" rel="noopener">cybercrime.gov.in</a>
+    or call <b>1930</b>.
+  </footer>
+</div>
+
+<script>
+let MODES = {};
+let DEFAULT_MODE = "balanced";
+
+const EXAMPLES = [
+  {label: "Scam - OTP request", text: "Dear Customer, your SBI account will be blocked today. Share the OTP you just received to keep it active."},
+  {label: "Scam - fake parcel", text: "Your parcel is stuck at customs. Pay Rs 49 clearance fee at hxxp://indiapost-delivery[.]top/pay now."},
+  {label: "Scam - lottery", text: "Congratulations! You won Rs 25,00,000 in the KBC lucky draw. Send your bank details to claim within 24 hours."},
+  {label: "Scam - UPI", text: "Sir I am sending you money by mistake, please approve this UPI request and send it back."},
+  {label: "Safe - bank alert", text: "Rs 1,200 debited from your account ending 4417 at a merchant terminal in Pune. Not you? Call the number on your card."},
+  {label: "Safe - OTP delivery", text: "483920 is your OTP for the login you started. Do not share it with anyone, including bank staff."},
+  {label: "Safe - courier", text: "Your shipment AWB 778812 reached the Pune hub and is scheduled for delivery tomorrow between 10 am and 1 pm."},
+  {label: "Safe - Hinglish chat", text: "Sun na, shaam ko ghar aa raha hoon, kuch laana hai kya market se?"},
+];
+
+function el(id){ return document.getElementById(id); }
+
+async function loadModes(){
+  const r = await fetch("/modes");
+  const data = await r.json();
+  DEFAULT_MODE = data.default;
+  const box = el("modes");
+  box.innerHTML = "";
+  for (const m of data.modes){
+    MODES[m.mode] = m;
+    const active = m.mode === DEFAULT_MODE;
+    const div = document.createElement("label");
+    div.className = "border rounded-lg p-3 cursor-pointer text-sm " +
+      (active ? "border-indigo-500 bg-indigo-50" : "border-slate-300 bg-white");
+    div.innerHTML = `
+      <input type="radio" name="mode" value="${m.mode}" ${active?"checked":""} class="mr-2">
+      <b class="capitalize">${m.mode}</b>
+      <div class="text-xs text-slate-600 mt-1">${m.rule || ""} &middot; threshold ${Number(m.threshold).toFixed(3)}</div>
+      <div class="text-xs text-slate-500 mt-1">${m.blurb || ""}</div>`;
+    div.querySelector("input").addEventListener("change", () => {
+      document.querySelectorAll("#modes label").forEach(l => {
+        l.className = "border rounded-lg p-3 cursor-pointer text-sm border-slate-300 bg-white";
+      });
+      div.className = "border rounded-lg p-3 cursor-pointer text-sm border-indigo-500 bg-indigo-50";
+    });
+    box.appendChild(div);
+  }
+}
+
+function currentMode(){
+  const checked = document.querySelector('input[name="mode"]:checked');
+  return checked ? checked.value : DEFAULT_MODE;
+}
+
+function renderExamples(){
+  const box = el("examples");
+  EXAMPLES.forEach(ex => {
+    const b = document.createElement("button");
+    b.className = "text-xs border border-slate-300 rounded-full px-3 py-1 bg-white hover:bg-slate-100";
+    b.textContent = ex.label;
+    b.onclick = () => { el("text").value = ex.text; updateCount(); };
+    box.appendChild(b);
+  });
+}
+
+function updateCount(){ el("count").textContent = el("text").value.length; }
+
+function paint(data){
+  el("result").classList.remove("hidden");
+  const badge = el("badge");
+  const colours = {scam:"bg-red-100 text-red-800", suspicious:"bg-amber-100 text-amber-800",
+                   safe:"bg-emerald-100 text-emerald-800"};
+  badge.className = "px-3 py-1 rounded-full text-sm font-semibold " + (colours[data.verdict]||"bg-slate-100");
+  badge.textContent = data.verdict.toUpperCase();
+  el("prob").textContent = `calibrated P(scam) = ${data.scam_probability.toFixed(3)}`;
+  el("bar").style.width = Math.round(data.scam_probability * 100) + "%";
+  el("bar").className = "h-2 rounded " + (data.verdict==="scam" ? "bg-red-500" :
+      data.verdict==="suspicious" ? "bg-amber-500" : "bg-emerald-500");
+  el("threshold").textContent =
+    `mode ${data.mode} · decision threshold ${data.threshold.toFixed(3)} · ` +
+    `raw score ${data.scam_probability_raw.toFixed(3)}`;
+
+  el("tactics").innerHTML = data.tactics.length ? data.tactics.map(t => `
+    <span class="text-xs px-2 py-1 rounded-full bg-slate-100 border border-slate-200 ${t.validated?"":"chip-unvalidated"}"
+      title="${t.validated ? "validated (>=20 real positives)" : "unvalidated: fewer than 20 real positives, do not trust its precision"}">
+      ${t.tag} · ${t.prob.toFixed(2)}${t.validated?"":" · unvalidated"}
+    </span>`).join("") : `<span class="text-xs text-slate-500">none above 0.15</span>`;
+
+  el("highlights").innerHTML = data.highlights.length ? data.highlights.map(h =>
+    `<span class="hl" title="removing this word lowered P(scam) by ${h.weight.toFixed(3)}">${h.word}</span>`).join(" ") :
+    `<span class="text-slate-500">no single word moved the score</span>`;
+
+  el("reasons").innerHTML = data.reasons.map(r => `<li>${r}</li>`).join("");
+  el("warnings").innerHTML = data.warnings.map(w => `<li>${w}</li>`).join("");
+  el("modelinfo").textContent =
+    `${data.model_info.name} · mode ${data.model_info.mode} · ${data.latency_ms} ms · ` +
+    `validated on: ${data.model_info.validated_on}`;
+}
+
+async function analyze(){
+  const text = el("text").value.trim();
+  if (!text){ el("status").textContent = "type a message first"; return; }
+  el("status").textContent = "scoring…";
+  try {
+    const res = await fetch("/analyze", {
+      method:"POST", headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({text, mode: currentMode()})
+    });
+    const data = await res.json();
+    if (!res.ok){ el("status").textContent = data.detail || "error"; return; }
+    el("status").textContent = "";
+    paint(data);
+  } catch (e) { el("status").textContent = "network error"; }
+}
+
+loadModes().catch(()=>{});
+renderExamples();
+// Clearing the box (or editing it) must hide the OLD verdict. Otherwise the
+// highlighted words describe a message that is no longer on screen.
+function clearResultOnEdit(){
+  updateCount();
+  el("result").classList.add("hidden");
+}
+el("text").addEventListener("input", clearResultOnEdit);
+el("go").addEventListener("click", analyze);
+</script>
+</body>
+</html>

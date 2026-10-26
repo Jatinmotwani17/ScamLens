@@ -1,0 +1,238 @@
+# ============================================================
+# ScamLens - hand-written keyword lists (src/baselines.py)
+#
+# This file powers the KEYWORD-RULE baseline: the deliberately simple
+# baseline that a real classifier must beat. Everything here is written by
+# hand in plain English + roman Hinglish. Matching is case-insensitive and
+# SUBSTRING based, so "otp" also matches "OTP", "Otp", "your otp is".
+#
+# VERDICT LOGIC (simple on purpose):
+#   1. if text contains any strong_scam_keyword     -> scam
+#   2. else if text contains any safe_veto_phrase   -> safe   (legit patterns win)
+#   3. else if text contains any weak_risk_keyword  -> suspicious
+#   4. else                                         -> safe
+#
+# The safe_veto phrases exist to stop the classic false positive:
+# "Your OTP is 483920. Do not share this OTP with anyone." is a REAL
+# OTP message, not a scam asking for the OTP.
+# ============================================================
+
+# Words/phrases that basically only appear in scams. One hit = scam.
+strong_scam_keywords:
+  - "share your otp"
+  - "share the otp"
+  - "otp share"
+  - "share karein"
+  - "otp batayein"
+  - "tell your otp"
+  - "verify your kyc"
+  - "kyc update"
+  - "kyc expired"
+  - "kyc se block"
+  - "account block hoga"
+  - "account will be blocked"
+  - "account suspended"
+  - "digital arrest"
+  - "cyber cell"
+  - "court warrant"
+  - "customs clearance fee"
+  - "customs se parcel"
+  - "parcel at customs"
+  - "lucky draw"
+  - "lottery lag"
+  - "you have won"
+  - "you won a prize"
+  - "kbc"
+  - "prize jeet"
+  - "task lagaiye"
+  - "part time job"
+  - "work from home"
+  - "daily income"
+  - "earn rs"
+  - "investment plan"
+  - "trading signal"
+  - "double your money"
+  - "guaranteed profit"
+  - "demat account"
+  - "loan app"
+  - "recovery agent"
+  - "install this app"
+  - "screen share"
+  - "team viewer"
+  - "anydesk"
+  - "remote access"
+  - "send rs 1"
+  - "recharge karke"
+  - "sim deactivate"
+  - "sim block hoga"
+  - "electricity disconnection"
+  - "light kat jayegi"
+  - "gas bill"
+  - "new number hai"
+  - "main phas gaya"
+  - "urgent help chahiye"
+  - "fee bhejein"
+  - "processing fee"
+  - "insurance fee"
+  - "refund ke liye"
+  - "bank details bharein"
+  - "card details"
+  - "cvv"
+
+# Words that appear in BOTH scams and ordinary messages. Alone they only
+# justify a "suspicious" verdict.
+weak_risk_keywords:
+  - "click"
+  - "link"
+  - "http"
+  - "www."
+  - "verify"
+  - "update"
+  - "confirm"
+  - "urgent"
+  - "turant"
+  - "immediately"
+  - "last date"
+  - "within 24 hours"
+  - "aaj hi"
+  - "abhi"
+  - "reward"
+  - "offer"
+  - "credit"
+  - "debit"
+  - "transaction"
+  - "upi"
+  - "gpay"
+  - "phonepe"
+  - "paytm"
+  - "bhejo"
+  - "pay karein"
+  - "call now"
+  - "call kar"
+  - "whatsapp"
+  - "winner"
+  - "congratulations"
+  - "kyc"
+  - "otp"
+  - "bank"
+
+# Real-message phrases that overrule weak risk words (hard-negative shield).
+# These come from genuine bank/courier/OTP wording.
+safe_veto_phrases:
+  - "do not share this otp"
+  - "never share your otp"
+  - "do not share otp"
+  - "has been credited"
+  - "has been debited"
+  - "is credited to"
+  - "available balance"
+  - "account balance is"
+  - "your statement"
+  - "txn amount"
+  - "thank you for using"
+  - "thanks for using"
+  - "registered mobile number"
+  - "will never ask for otp"
+  - "do not click any link"
+  - "track your parcel"
+  - "out for delivery"
+  - "delivered to"
+  - "appointment on"
+  - "your order has been shipped"
+
+# Per-tactic keyword lists: the keyword baseline ALSO predicts tactic tags
+# (any tag whose list matches at least once). Used for the tactics metrics.
+tactics:
+  otp_or_pin_request:
+    - "otp"
+    - "one time password"
+    - "cvv"
+    - "pin"
+  urgency_threat:
+    - "turant"
+    - "immediately"
+    - "urgent"
+    - "last date"
+    - "within 24 hours"
+    - "aaj hi"
+    - "tonight"
+    - "abhi karein"
+  bank_kyc_impersonation:
+    - "kyc"
+    - "aadhaar"
+    - "account block"
+    - "account suspended"
+    - "bank update"
+    - "verify your account"
+  authority_impersonation:
+    - "police"
+    - "cbi"
+    - "customs"
+    - "trai"
+    - "court"
+    - "cyber cell"
+    - "digital arrest"
+    - "government"
+  payment_or_upi_request:
+    - "upi"
+    - "gpay"
+    - "phonepe"
+    - "paytm"
+    - "bhejo"
+    - "send rs"
+    - "collect request"
+    - "pay karein"
+  suspicious_link:
+    - "http"
+    - "www."
+    - "bit.ly"
+    - "click here"
+    - "login"
+    - "link"
+  prize_or_lottery:
+    - "lottery"
+    - "prize"
+    - "lucky"
+    - "draw"
+    - "kbc"
+    - "winner"
+  job_or_task_scam:
+    - "job"
+    - "task"
+    - "work from home"
+    - "part time"
+    - "salary"
+    - "daily income"
+  investment_or_trading_scam:
+    - "invest"
+    - "trading"
+    - "share market"
+    - "profit"
+    - "demat"
+    - "double your money"
+  loan_app_harassment:
+    - "loan"
+    - "interest"
+    - "repayment"
+    - "emi"
+    - "recovery agent"
+  parcel_courier_scam:
+    - "parcel"
+    - "courier"
+    - "delivery"
+    - "awb"
+    - "customs"
+  utility_disconnection_scam:
+    - "electricity"
+    - "disconnection"
+    - "gas"
+    - "light bill"
+    - "water bill"
+    - "sim deactivate"
+  relative_in_trouble:
+    - "papa"
+    - "mummy"
+    - "beta"
+    - "bhai"
+    - "new number"
+    - "phns gaya"

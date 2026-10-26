@@ -1,0 +1,76 @@
+# ------------------------------------------------------------
+# PRIVACY FIRST: raw personal messages live only here and must
+# never be committed. These folders hold private or derived data.
+# ------------------------------------------------------------
+data/private/
+data/interim/
+# cached downloads of public datasets
+data/external/
+# derived tables and their aggregate reports - rebuild with src.build_dataset
+data/processed/
+# cached Gemini responses (Phase 2 optional pass)
+data/llm_cache/
+# joblib dumps of trained baselines
+models/
+*.parquet
+
+# Python build / cache junk
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Jupyter autosave checkpoints
+.ipynb_checkpoints/
+
+# Experiment tracking (Phase 3+)
+mlruns/
+
+# Phase 3 model weights / checkpoints - NEVER commit these
+*.pt
+*.safetensors
+checkpoints/
+outputs/
+*.ckpt
+
+# Secrets - API keys never belong in git (keep .env.example only)
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Run logs (`python -m src.x > x_log.txt`). They can capture stdout that quotes
+# messages, so they are never committed.
+*_log.txt
+logs/
+# raw pip output (UTF-16, useless after the install finished)
+pip_*.txt
+
+# Screenshots are captured from a real `make serve` run (see README) and are
+# small PNGs of the public UI only - no message data beyond the demo examples.
+# docs/screenshots/*.png is intentionally NOT ignored.
+
+# Editor / tooling metadata (not part of the project)
+.freebuff/
+
+# Editor / OS junk
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test / coverage caches
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Kaggle / Colab hand-off bundle (build it with scripts/make_kaggle_bundle.py)
+scamlens_bundle.zip
+scamlens_outputs.zip

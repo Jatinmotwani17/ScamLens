@@ -1,0 +1,68 @@
+# ============================================================
+# ScamLens - serving configuration (Phase 5)
+#
+# Two models, three modes. Everything below is read once at startup by
+# src/serving/registry.py. Nothing here changes how a model was trained; the
+# thresholds come from configs/operating_point.yaml (fitted on validation).
+# ============================================================
+
+# Which model to serve. "tfidf" always works; "muril" needs outputs/e1_muril/
+# (run the Kaggle notebook and drop the folder in). If the chosen model is
+# missing, the registry falls back to tfidf and says so in /health.
+model: "tfidf"
+
+# The mode used when a request does not specify one. Must be one of the keys in
+# operating_point.yaml -> modes.
+default_mode: "strict"
+
+models:
+  tfidf:
+    display_name: "TF-IDF + Logistic Regression"
+    verdict_bundle: "models/verdict_lr_plus.joblib"
+    tactics_bundle: "models/tactics_lr_plus.joblib"
+    keyword_bundle: "models/keyword.joblib"
+    training_mix: "mix_synth_plus_real (Phase 5 data: +2,500 synthetic hard negatives, 6x more real ham)"
+    validated_on: "English real messages only (IMC25 scams + UCI ham)"
+    # A run directory under outputs/. Unused while model: tfidf.
+    run_dir: "outputs/e1_muril"
+    # Per-1000-char latency budget used by the tests and by /health.
+    p95_budget_ms: 300
+  muril:
+    display_name: "MuRIL (multi-task transformer)"
+    verdict_bundle: ""
+    tactics_bundle: ""
+    keyword_bundle: "models/keyword.joblib"
+    training_mix: "mix_synth_plus_real (E1)"
+    validated_on: "English real messages only (IMC25 scams + UCI ham)"
+    run_dir: "outputs/e1_muril"
+    p95_budget_ms: 400
+
+# Tags with <20 real positives are shown but marked unvalidated (never claim
+# precision on them). Source: results/RESULTS.md per-tag support table.
+validated_tags:
+  - "suspicious_link"
+  - "urgency_threat"
+  - "authority_impersonation"
+  - "bank_kyc_impersonation"
+  - "parcel_courier_scam"
+  - "utility_disconnection_scam"
+  - "relative_in_trouble"
+
+# Serving limits and safety rails.
+limits:
+  min_chars: 1
+  max_chars: 1000
+  max_highlights: 40          # word-level occlusion budget (== model calls)
+  max_occlusion_words: 40
+  requests_per_minute: 30     # per client IP; a research prototype, not a CDN
+  max_body_bytes: 8192
+
+# The "suspicious" verdict rule (see src/suspicious.py). Recorded here so the
+# API and the evaluation cannot drift apart.
+suspicious:
+  weak_tag_prob: 0.50
+  risky_url_types: ["shortener", "odd_tld", "ip_address", "official_looking"]
+
+paths:
+  model_card: "docs/MODEL_CARD.md"
+  static_dir: "static"

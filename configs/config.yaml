@@ -1,0 +1,164 @@
+# ============================================================
+# ScamLens - central configuration
+# Everything tunable lives here so the Python code stays simple.
+# Loaded by src/config.py using PyYAML.
+# ============================================================
+
+# Every random step in the project uses this seed so results are reproducible.
+seed: 42
+
+# File paths, relative to the project root (scamlens/).
+paths:
+  private_raw: "data/private/raw_messages.txt"      # gitignored - raw pasted messages, NEVER committed
+  unlabeled_pool: "data/interim/unlabeled_pool.csv" # scrubbed messages waiting for labels
+  labeled: "data/interim/labeled.csv"               # your labels so far (resumable)
+  public_weak: "data/interim/public_weak.csv"       # weak public dataset rows
+  synthetic_seed: "tests/fixtures/synthetic_seed.csv"  # Phase 1 seed rows = TEST FIXTURES only
+  messages_parquet: "data/processed/messages.parquet"
+  # Phase 2.5: 'suspicious' is an UNSURE BAND, not a trained class. Those rows
+  # are kept out of the main table and parked here for Phase 4 (abstention).
+  suspicious_holdout: "data/processed/suspicious_holdout.parquet"
+  synthetic_parquet: "data/processed/synthetic.parquet"  # Phase 2 generator output
+  synthetic_llm_parquet: "data/processed/synthetic_llm.parquet"  # Gemini paraphrases (optional)
+  llm_cache_dir: "data/llm_cache"             # one cached response per source text (gitignored)
+  data_report: "data/processed/data_report.txt"
+  keywords: "configs/keywords.yaml"       # keyword-rule baseline (src/baselines.py)
+  models_dir: "models"                     # joblib dumps land here
+  results_json: "results/metrics.json"     # every metric the harness computes
+  results_md: "results/RESULTS.md"         # human-readable tables
+  # Phase 3.6: per-row max cosine similarity to the nearest TRAIN row
+  # (written by src/nn_sim.py, read by src/evaluate.py).
+  nn_sim: "results/nn_sim.parquet"
+  # ---- Phase 4 (calibration / abstention / robustness) ----
+  # Robustness probes live in their OWN table with source=probe_*. They are
+  # never merged into messages.parquet, so they can never be trained on.
+  probes_parquet: "data/processed/probes.parquet"
+  # The 200 safe-chat probe messages, FROZEN after the first build. They are
+  # the held-out false-alarm test set: tuning against them is fine, editing
+  # them is not (src/robustness.load_or_freeze_safe_chat).
+  safe_chat_probe: "data/processed/safe_chat_probe_frozen.parquet"
+  # Phase 5 hard negatives: a second, DISJOINT safe generator (src/synth/safe_v2.py).
+  synthetic_safe_v2_parquet: "data/processed/synthetic_safe_v2.parquet"
+  # The fitted temperature + t_high/t_low for one model (src/calibrate.py).
+  operating_point: "configs/operating_point.yaml"
+  # Machine-readable Phase 4 outputs.
+  phase4_json: "results/phase4.json"
+  phase4_report: "results/PHASE4_REPORT.md"
+  error_analysis: "results/error_analysis.md"
+  novelty_md: "results/novelty_metrics.md"          # metrics bucketed by max_train_sim
+  robustness_md: "results/robustness.md"            # perturbation / transfer probes
+  reliability_bins: "results/reliability_bins.csv"
+  external_dir: "data/external"            # cached public online datasets (gitignored)
+  external_rows: "data/interim/external_real.csv"  # REAL test_real rows (src/external_data.py)
+
+# Text diversity / duplicate control (src/data_checks.py + src/build_dataset.py)
+diversity:
+  min_unique_ratio: 0.95   # synthetic: >=95% of rows must have a UNIQUE text
+                           # (measured on the generated corpus, BEFORE dedupe)
+  min_distinct2_per_family: 3  # a family repeating one sentence is useless
+
+# Template / duplicate clustering (src/dedup.py)
+dedup:
+  num_perm: 128        # number of MinHash permutations (more = more accurate, slower)
+  lsh_threshold: 0.7   # Jaccard similarity at or above which two messages are "same template"
+  shingle_size: 5      # character n-gram size used to shingle the text
+
+# Leakage-safe split ratios (src/splits.py - Phase 1 temporal/group splitter)
+splits:
+  train: 0.70
+  val: 0.15
+  test_a: 0.15
+  temporal_min_date_coverage: 0.60  # use temporal split only if >=60% of rows have a date
+  min_test_scam_rows: 30            # warn if the test split has fewer scam rows than this
+
+# Family-aware split ratios (src/splits2.py - the Phase 2 splitter)
+splits2:
+  holdout_families_per_tactic: 0.25  # ~25% of families per tactic -> test_b (unseen variants)
+  train: 0.80                        # of the REMAINING groups: 80% train
+  val: 0.10                          # 10% val
+  test_a: 0.10                       # 10% test_a
+  min_train_positives_per_tag: 100   # Phase 3.5 hard floor for EVERY tag
+  min_train_family_fraction: 0.60    # >=60% of a tag's families stay in train
+  min_train_families_per_tag: 2      # and at least 2 families
+
+# Phase 3.5: real external rows now participate in training (grouped by
+# near-duplicate cluster so a train cluster can never sit in val/test).
+phase35:
+  real_cluster_threshold: 0.70       # MinHash Jaccard used for real clusters
+  real_train_ratio: 0.70             # of real ROWS, by whole cluster
+  real_val_ratio: 0.15
+  real_test_ratio: 0.15
+  external_train_max_per_cluster: 5  # cap repeated copies of one template
+  # Phase 5: raised from 8,000 so the extra REAL ham (below) does not push real
+  # scams out of training. The per-cluster cap still stops one template
+  # dominating.
+  external_train_max_rows: 10000     # hard cap on REAL rows in the train split
+  # Phase 5: 400 -> 2,400. The false-alarm problem is caused by too little REAL
+  # legit text (278 train ham), and UCI ships ~4.8k ham under CC BY 4.0. Using
+  # more of it is a real-data fix, not a synthetic one.
+  ham_reserve: 2400                  # UCI ham rows reserved as REAL safe data
+
+# Which training mix every run/report must state.
+#   mix_synth_only       - synthetic train only (E1s ablation)
+#   mix_synth_plus_real  - synthetic + external scam train + real ham train (E1 default)
+train_mix:
+  default: "mix_synth_plus_real"
+  allowed: ["mix_synth_only", "mix_synth_plus_real"]
+
+# Phase 2 synthetic generator defaults (src/synth/generate.py)
+generate:
+  n_scam: 2500
+  n_suspicious: 800
+  n_safe: 2500
+  noise_rate: 0.40             # ~40% of messages get typo/case/emoji noise
+  min_hard_negative_frac: 0.50 # >=50% of safe rows must be hard negatives
+
+# Honest evaluation harness (src/evaluate.py)
+evaluate:
+  bootstrap_resamples: 1000     # bootstrap 95% CIs for macro-F1
+  min_real_test_rows: 30        # below this -> "NO VALID REAL TEST SET" warning
+  min_real_for_phase3: 50       # real-data gate: wait for Phase 3 GPU training
+  min_stratum_rows: 30          # a real STRATUM below this = "too small for claims"
+  min_tag_support: 20           # a tactic tag with fewer real positives in
+                                # test_real is "unvalidated (synthetic only)"
+
+# Phase 4: calibration, abstention band, robustness probes (src/phase4_common.py)
+phase4:
+  calibration_bins: 10       # equal-width reliability bins for ECE
+  min_precision: 0.95        # t_high: scam verdict must keep >= this precision
+  min_npv: 0.95              # t_low: safe verdict must keep >= this NPV
+  min_rows_for_claims: 30    # anything smaller is printed as "too small"
+  probe_n_transfer: 300      # held-out real English scams -> roman Hinglish
+  probe_n_safe_chat: 200     # fresh safe messages (family/delivery/bank alert)
+  probe_review_n: 30         # rows printed for manual review (Gemini path)
+
+# Shortcut audit (src/audit.py)
+audit:
+  shortcut_flag_threshold: 0.60  # single-feature macro-F1 above this = suspicious
+  top_features: 20               # top +/- features printed for the scam class
+  top_wrong_predictions: 15      # most-confident wrong predictions on test_b
+  # Style/label balance: a script_style or source whose scam rate is outside
+  # this band is a label shortcut (e.g. "every devanagari row is a scam").
+  scam_rate_high: 0.90
+  scam_rate_low: 0.10
+  # Groups smaller than this are printed but not flagged: 2 rows cannot
+  # prove a style shortcut (and test_real user data is tiny by design).
+  min_rows_for_style_flag: 10
+
+# Optional LLM paraphrasing (src/synth/llm_paraphrase.py) - skips without a key
+llm:
+  model: "gemini-2.5-flash"   # used only if GEMINI_API_KEY exists in .env
+  subset_size: 400             # random subset of synthetic rows to paraphrase
+  max_calls: 400               # hard cap on API calls (cache makes reruns free)
+  cache_dir: "data/llm_cache"  # one cached response per source text (gitignored)
+
+# Interactive labeling defaults (src/label_cli.py)
+labeling:
+  default_labeler: "primary_labeler"  # change this to your name or initials
+  default_source: "self_collected"    # source tag for messages you paste yourself
+
+# Weak public data (src/public_data.py)
+public_data:
+  # Verified to exist on HuggingFace. UCI's SMS Spam Collection, licensed CC BY 4.0.
+  # English commercial spam - useful only as a weak negative signal, never for eval.
+  sms_spam_dataset_id: "ucirvine/sms_spam"

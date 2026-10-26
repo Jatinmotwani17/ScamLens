@@ -1,0 +1,71 @@
+{
+  "model": "verdict_lr_plus",
+  "strict_threshold": 0.039652,
+  "balanced_threshold": 0.015746,
+  "weak_tag_prob": 0.5,
+  "clear_scams": {
+    "target": "external_scam (clear scams)",
+    "n": 3511,
+    "scam": 3443,
+    "suspicious": 40,
+    "safe": 28,
+    "share_suspicious": 0.011392765593847906,
+    "too_small": false,
+    "evidence_when_suspicious": {
+      "suspicious_link": 31,
+      "authority_impersonation": 4,
+      "urgency_threat": 2,
+      "utility_disconnection_scam": 2,
+      "bank_kyc_impersonation": 1
+    }
+  },
+  "clear_safe": {
+    "target": "public_ham_english (clear safe)",
+    "n": 345,
+    "scam": 6,
+    "suspicious": 16,
+    "safe": 323,
+    "share_suspicious": 0.0463768115942029,
+    "too_small": false,
+    "evidence_when_suspicious": {
+      "suspicious_link": 15,
+      "urgency_threat": 1
+    }
+  },
+  "synthetic_test_b": {
+    "target": "test_b (synthetic)",
+    "n": 215,
+    "scam": 123,
+    "suspicious": 10,
+    "safe": 82,
+    "share_suspicious": 0.046511627906976744,
+    "too_small": false,
+    "evidence_when_suspicious": {
+      "payment_or_upi_request": 4,
+      "suspicious_link": 2,
+      "job_or_task_scam": 2,
+      "bank_kyc_impersonation": 1,
+      "urgency_threat": 1
+    }
+  },
+  "holdout": {
+    "target": "suspicious holdout (human unsure)",
+    "n": 783,
+    "scam": 426,
+    "suspicious": 355,
+    "safe": 2,
+    "share_suspicious": 0.45338441890166026,
+    "too_small": false,
+    "evidence_when_suspicious": {
+      "urgency_threat": 113,
+      "payment_or_upi_request": 90,
+      "suspicious_link": 63,
+      "authority_impersonation": 24,
+      "utility_disconnection_scam": 24
+    }
+  },
+  "never_abstain": {
+    "scam_verdicts_on_clear_scams": 3483,
+    "cost_note": "the baseline this rule must beat: every row above the threshold keeps its definitive verdict"
+  }
+}

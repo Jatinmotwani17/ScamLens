@@ -1,0 +1,45 @@
+# ScamLens SERVING image - slim variant (CPU only, non-root).
+#
+# Why this file exists: Dockerfile installs requirements.txt, which is the whole
+# research environment (torch, transformers, jupyter, matplotlib) and produces a
+# ~3 GB image. Serving needs sklearn + fastapi and nothing else, so this image is
+# the one to show when someone asks "how big is your service?".
+#
+# Build AFTER the artefacts exist on the host:
+#   python -m src.build_dataset && python -m src.baselines
+#   python -m src.calibrate --model verdict_lr_plus
+#   docker build -f Dockerfile.slim -t scamlens:slim .
+FROM python:3.12-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /app
+
+# curl is only for the HEALTHCHECK.
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Serving-only dependency list. No torch, no transformers, no notebooks.
+COPY requirements-serve.txt .
+RUN pip install -r requirements-serve.txt
+
+# Only what an inference process reads. No data/, no tests, no notebooks.
+COPY src/ ./src/
+COPY configs/ ./configs/
+COPY static/ ./static/
+COPY docs/MODEL_CARD.md ./docs/MODEL_CARD.md
+COPY models/ ./models/
+
+# Non-root: the service never writes to its own filesystem.
+RUN useradd --create-home --uid 10001 scamlens \
+    && chown -R scamlens:scamlens /app
+USER scamlens
+
+EXPOSE 8000
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD curl -fsS http://127.0.0.1:8000/health || exit 1
+
+CMD ["uvicorn", "src.api:app", "--host", "0.0.0.0", "--port", "8000"]

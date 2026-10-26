@@ -1,0 +1,18 @@
+# ScamLens SERVING dependencies only.
+#
+# requirements.txt is the full research/training environment (torch, transformers,
+# jupyter, matplotlib). None of that is needed to answer one request: the shipped
+# model is a scikit-learn pipeline. Installing the full list produced a 2.97 GB
+# image; this list exists so the demo image can be small.
+#
+# Keep this in sync with what src/api.py + src/serving/registry.py import.
+fastapi>=0.110
+uvicorn[standard]>=0.29
+pydantic>=2.6
+pyyaml>=6.0
+numpy>=1.26
+# pandas is pulled in transitively: src/phase4_common.py (imported for
+# apply_temperature) imports it at module level.
+pandas>=2.2
+joblib>=1.3
+scikit-learn>=1.4

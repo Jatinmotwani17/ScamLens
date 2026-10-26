@@ -1,0 +1,307 @@
+{
+  "model": "verdict_lr_plus",
+  "t_high": 0.039430647999091156,
+  "temperature": 0.461421,
+  "label": "robustness probe, not a real-world claim",
+  "attacks": [
+    {
+      "pool": "real_scams",
+      "attack": "clean (baseline)",
+      "n": 500,
+      "recall": 0.992,
+      "mean_p": 0.9676145213852739,
+      "delta_recall": 0.0,
+      "url_rows_affected": 207
+    },
+    {
+      "pool": "test_b_scams",
+      "attack": "clean (baseline)",
+      "n": 132,
+      "recall": 1.0,
+      "mean_p": 0.9941155117135968,
+      "delta_recall": 0.0,
+      "url_rows_affected": 60
+    },
+    {
+      "pool": "real_scams",
+      "attack": "typos",
+      "label": "random typos (char swap, 20% of words)",
+      "n": 500,
+      "n_changed": 436,
+      "recall": 0.992,
+      "recall_changed": 0.9954128440366973,
+      "mean_p": 0.9600329814297405,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0034128440366972823
+    },
+    {
+      "pool": "test_b_scams",
+      "attack": "typos",
+      "label": "random typos (char swap, 20% of words)",
+      "n": 132,
+      "n_changed": 115,
+      "recall": 1.0,
+      "recall_changed": 1.0,
+      "mean_p": 0.9905897109169378,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0
+    },
+    {
+      "pool": "real_scams",
+      "attack": "spaces_inside_words",
+      "label": "space inside words (20%)",
+      "n": 500,
+      "n_changed": 446,
+      "recall": 0.99,
+      "recall_changed": 0.9910313901345291,
+      "mean_p": 0.9634933275460478,
+      "delta_recall": -0.0020000000000000018,
+      "delta_recall_changed": -0.0009686098654708708
+    },
+    {
+      "pool": "test_b_scams",
+      "attack": "spaces_inside_words",
+      "label": "space inside words (20%)",
+      "n": 132,
+      "n_changed": 114,
+      "recall": 1.0,
+      "recall_changed": 1.0,
+      "mean_p": 0.9909916787296351,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0
+    },
+    {
+      "pool": "real_scams",
+      "attack": "lookalikes",
+      "label": "lookalike characters (30%)",
+      "n": 500,
+      "n_changed": 484,
+      "recall": 0.994,
+      "recall_changed": 0.9958677685950413,
+      "mean_p": 0.9593223335691138,
+      "delta_recall": 0.0020000000000000018,
+      "delta_recall_changed": 0.003867768595041343
+    },
+    {
+      "pool": "test_b_scams",
+      "attack": "lookalikes",
+      "label": "lookalike characters (30%)",
+      "n": 132,
+      "n_changed": 115,
+      "recall": 1.0,
+      "recall_changed": 1.0,
+      "mean_p": 0.9893230523473703,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0
+    },
+    {
+      "pool": "real_scams",
+      "attack": "leetspeak",
+      "label": "leetspeak (25%)",
+      "n": 500,
+      "n_changed": 481,
+      "recall": 0.992,
+      "recall_changed": 0.9937629937629938,
+      "mean_p": 0.9573295101380188,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0017629937629938253
+    },
+    {
+      "pool": "test_b_scams",
+      "attack": "leetspeak",
+      "label": "leetspeak (25%)",
+      "n": 132,
+      "n_changed": 119,
+      "recall": 1.0,
+      "recall_changed": 1.0,
+      "mean_p": 0.9855185666629377,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0
+    },
+    {
+      "pool": "real_scams",
+      "attack": "all_caps",
+      "label": "ALL CAPS",
+      "n": 500,
+      "n_changed": 494,
+      "recall": 0.992,
+      "recall_changed": 0.9939271255060729,
+      "mean_p": 0.9676145213852739,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0019271255060728798
+    },
+    {
+      "pool": "test_b_scams",
+      "attack": "all_caps",
+      "label": "ALL CAPS",
+      "n": 132,
+      "n_changed": 112,
+      "recall": 1.0,
+      "recall_changed": 1.0,
+      "mean_p": 0.9941155117135968,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0
+    },
+    {
+      "pool": "real_scams",
+      "attack": "emoji",
+      "label": "emoji insertion",
+      "n": 500,
+      "n_changed": 500,
+      "recall": 0.992,
+      "recall_changed": 0.992,
+      "mean_p": 0.9661397017174947,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0
+    },
+    {
+      "pool": "test_b_scams",
+      "attack": "emoji",
+      "label": "emoji insertion",
+      "n": 132,
+      "n_changed": 132,
+      "recall": 1.0,
+      "recall_changed": 1.0,
+      "mean_p": 0.9939244048634333,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0
+    },
+    {
+      "pool": "real_scams",
+      "attack": "url_obfuscation",
+      "label": "URL obfuscation (hxxp, [.])",
+      "n": 500,
+      "n_changed": 204,
+      "recall": 0.992,
+      "recall_changed": 1.0,
+      "mean_p": 0.9676268626024407,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.008000000000000007
+    },
+    {
+      "pool": "test_b_scams",
+      "attack": "url_obfuscation",
+      "label": "URL obfuscation (hxxp, [.])",
+      "n": 132,
+      "n_changed": 60,
+      "recall": 1.0,
+      "recall_changed": 1.0,
+      "mean_p": 0.9941022193048441,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0
+    },
+    {
+      "pool": "real_scams",
+      "attack": "punctuation",
+      "label": "punctuation insertion",
+      "n": 500,
+      "n_changed": 500,
+      "recall": 0.992,
+      "recall_changed": 0.992,
+      "mean_p": 0.9615279661492705,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0
+    },
+    {
+      "pool": "test_b_scams",
+      "attack": "punctuation",
+      "label": "punctuation insertion",
+      "n": 132,
+      "n_changed": 132,
+      "recall": 1.0,
+      "recall_changed": 1.0,
+      "mean_p": 0.9929784616330286,
+      "delta_recall": 0.0,
+      "delta_recall_changed": 0.0
+    }
+  ],
+  "transfer": {
+    "available": true,
+    "n": 300,
+    "dictionary_phrases": 353,
+    "seed_pairs_dropped": [
+      "click here -> yahan click karein",
+      "log in -> login karein",
+      "your details -> aapki details",
+      "visit -> jaayein",
+      "prize -> inaam",
+      "limit -> limit"
+    ],
+    "rows_changed": 291,
+    "share_changed": 0.97,
+    "mean_token_replacement": 0.393405150722645,
+    "recall_english": 0.99,
+    "recall_hinglish": 0.9866666666666667,
+    "mean_p_english": 0.9610738948818427,
+    "mean_p_hinglish": 0.9385133114941538,
+    "gemini_status": "no GEMINI_API_KEY - Gemini paraphrase skipped",
+    "gemini_n": 0,
+    "recall_gemini": null,
+    "examples": [
+      {
+        "english": "Dear <NAME> user, Your A/C will be blocked...",
+        "hinglish": "Dear <NAME> user, aapka A/C block ho jayega...",
+        "p_english": 0.9999683677703606,
+        "p_hinglish": 0.9992802554178339
+      },
+      {
+        "english": "Tinder code is <US_DRIVER_LICENSE> Don't share...",
+        "hinglish": "Tinder code hai <US_DRIVER_LICENSE> Don't share...",
+        "p_english": 0.9959087372408171,
+        "p_hinglish": 0.9876987088137199
+      },
+      {
+        "english": "Dear <NAME> Trader, Update your <NAMED_ENTITY> to avoid termination of wallet. To update click <URL> to update and secure account.",
+        "hinglish": "Dear <NAME> Trader, Update aapka <NAMED_ENTITY> se bachne ke liye termination of wallet. To update click <URL> to update aur surakshit account.",
+        "p_english": 0.9999999999209797,
+        "p_hinglish": 0.9999999836182976
+      },
+      {
+        "english": "Your bank account has been blocked. Log in here right now <URL> or the account will be closed!",
+        "hinglish": "aapka bank account has been block. Log in here abhi <URL> ya the account band ho jayega!",
+        "p_english": 0.9999984715229387,
+        "p_hinglish": 0.999998796135497
+      },
+      {
+        "english": "We were not able to deliver your package, so here's how you can manage it <URL>",
+        "hinglish": "hum were nahi able to deliver aapka package, so here's how aap can manage it <URL>",
+        "p_english": 0.9999942480619143,
+        "p_hinglish": 0.9990703303358553
+      }
+    ]
+  },
+  "safe_chat": {
+    "n": 200,
+    "n_flagged": 11,
+    "fpr": 0.055,
+    "mean_p": 0.01102041046392626,
+    "max_train_sim": 0.6069320440292358,
+    "mean_train_sim": 0.3245656490325928,
+    "by_style": {
+      "english": {
+        "n": 100,
+        "fpr": 0.11,
+        "mean_p": 0.02199741739429987,
+        "too_small": false
+      },
+      "roman_hinglish": {
+        "n": 100,
+        "fpr": 0.0,
+        "mean_p": 4.340353355264982e-05,
+        "too_small": false
+      }
+    },
+    "examples_flagged": [
+      "Just checking, cheque book request received, it will be delivered to your registered address",
+      "Hi both, your fixed deposit matures next month, the renewal form is at the branch - Neha",
+      "Hi both, your parcel is at the security desk, the guard has it since 4 pm see you soon. - Rohit",
+      "Just checking, cheque book request received, it will be delivered to your registered address - Sana",
+      "Just checking, your parcel is at the security desk, the guard has it since 4 pm"
+    ],
+    "too_small_for_claims": false,
+    "frozen": true,
+    "source_file": "C:\\Users\\jatin\\OneDrive\\Desktop\\Scamlens\\data\\processed\\safe_chat_probe_frozen.parquet"
+  },
+  "probe_rows_written": 5556,
+  "probe_max_train_sim": 0.6069320440292358
+}

@@ -1,0 +1,26 @@
+# ScamLens - Phase 1 + Phase 2.5 + Phase 3 dependencies
+# The Phase 1/2 versions below are what was actually installed and tested.
+# Phase 3 packages are intentionally UNPINNED: install current versions.
+pandas==3.0.6
+pyarrow==26.0.0
+numpy==2.5.4
+scikit-learn==1.9.1
+datasketch==2.0.0
+rapidfuzz==3.14.6
+pyyaml==6.0.3
+pytest==9.1.1
+jupyter==1.1.1
+matplotlib==3.11.2
+tqdm==4.70.1
+datasets==5.1.0
+python-dotenv==1.2.4
+google-genai==2.31.0
+
+# ---- Phase 3: fine-tuning (current versions, no pins) ----
+torch
+transformers
+accelerate
+sentencepiece
+protobuf
+tiktoken
+joblib

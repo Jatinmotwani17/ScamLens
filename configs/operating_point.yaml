@@ -1,0 +1,166 @@
+# Phase 4 operating point - FITTED ON VALIDATION ONLY.
+# Written by src/calibrate.py. Never edit by hand and never
+# refit on a test split (src/phase4_common.assert_val_only).
+#   p >= t_high -> scam | p <= t_low -> safe | else suspicious
+model: verdict_lr_plus
+default_mode: balanced
+modes:
+  strict:
+    threshold: 0.039652
+    rule: fpr <= 0.05
+    blurb: 'validation FPR target <= 5%: highest recall inside the cap'
+    target_met: true
+    val_recall_weighted: 0.9955853033323837
+    val_fpr_weighted: 0.0494729907773386
+    val_safe_flagged: 35
+    val_scam_missed: 31
+  balanced:
+    threshold: 0.015746
+    rule: fpr <= 0.10
+    blurb: 'validation FPR target <= 10%: more recalls, more false alarms'
+    target_met: true
+    val_recall_weighted: 0.997294218171461
+    val_fpr_weighted: 0.09985177865612647
+    val_safe_flagged: 73
+    val_scam_missed: 19
+  sensitive:
+    threshold: 0.331283
+    rule: recall >= 0.99
+    blurb: 'validation recall target >= 99%: fewest flags if met'
+    target_met: true
+    val_recall_weighted: 0.9901737396753061
+    val_fpr_weighted: 0.005797101449275362
+    val_safe_flagged: 4
+    val_scam_missed: 69
+mode_measured:
+  strict:
+    ham_n: 345
+    ham_fp: 22
+    ham_fpr: 0.06376811594202898
+    ham_fpr_ci: 0.064 (0.042-0.095), n=345
+    probe_n: 200
+    probe_fp: 11
+    probe_fpr: 0.055
+    probe_fpr_ci: 0.055 (0.031-0.096), n=200
+    ext_n: 3511
+    ext_recall: 0.9920250640843065
+    ext_recall_ci: 0.992 (0.988-0.994), n=3511
+    test_b_scam_n: 132
+    test_b_recall: 1.0
+  balanced:
+    ham_n: 345
+    ham_fp: 32
+    ham_fpr: 0.0927536231884058
+    ham_fpr_ci: 0.093 (0.066-0.128), n=345
+    probe_n: 200
+    probe_fp: 16
+    probe_fpr: 0.08
+    probe_fpr_ci: 0.080 (0.050-0.126), n=200
+    ext_n: 3511
+    ext_recall: 0.9948732554827684
+    ext_recall_ci: 0.995 (0.992-0.997), n=3511
+    test_b_scam_n: 132
+    test_b_recall: 1.0
+  sensitive:
+    ham_n: 345
+    ham_fp: 4
+    ham_fpr: 0.011594202898550725
+    ham_fpr_ci: 0.012 (0.005-0.029), n=345
+    probe_n: 200
+    probe_fp: 1
+    probe_fpr: 0.005
+    probe_fpr_ci: 0.005 (0.001-0.028), n=200
+    ext_n: 3511
+    ext_recall: 0.9823412133295357
+    ext_recall_ci: 0.982 (0.977-0.986), n=3511
+    test_b_scam_n: 132
+    test_b_recall: 0.9924242424242424
+fitted_on: validation only (never test)
+val_rows: 4540
+fit_weights: 'equal weight per cell: scam|safe x synthetic|real (raw val is 98.3%
+  scam / ~87% single-source)'
+cell_counts:
+  real/scam: 3511
+  synthetic/safe: 440
+  real/safe: 345
+  synthetic/scam: 244
+calibration:
+  method: temperature scaling (one parameter, weighted NLL)
+  temperature: 0.461421
+  temperature_raw_val_sensitivity: 0.712275
+  ece_raw: 0.02981263884745179
+  ece_calibrated_reweighted_val: 0.005326136730809018
+operating_point:
+  t_high: 0.039430647999091156
+  t_low: 0.039430647999091156
+  min_precision_target: 0.95
+  min_npv_target: 0.95
+  precision_at_t_high: 0.950592776310811
+  npv_at_t_low: 0.9500380654437227
+  n_scam_behind_t_high: 3724
+  n_safe_behind_t_low: 749
+  n_rows_in_band: 0
+  abstention_available: false
+  band_reason: 'no validation rows between t_low and t_high: a single cut satisfies
+    both targets, so the abstain band is empty by construction'
+  bands_overlap: true
+sensitivity_thresholds:
+  val_synthetic:
+    n_rows_in_band: 0
+    abstention_available: false
+    band_reason: 'no validation rows between t_low and t_high: a single cut satisfies
+      both targets, so the abstain band is empty by construction'
+    t_high: 0.024737713441468263
+    t_low: 0.024737713441468263
+    min_precision_target: 0.95
+    min_npv_target: 0.95
+    precision_at_t_high: 0.953125
+    npv_at_t_low: 0.9503239740820735
+    n_rows: 684
+    n_scam: 244
+    n_safe: 440
+    n_definitive_scam: 256
+    n_definitive_safe: 463
+    n_safe_behind_t_low: 429
+    n_scam_behind_t_high: 244
+    targets_achievable:
+      t_high: true
+      t_low: true
+    bands_overlap: true
+    cell_counts:
+      scam: 244
+      safe: 440
+  val_real:
+    n_rows_in_band: 0
+    abstention_available: false
+    band_reason: 'no validation rows between t_low and t_high: a single cut satisfies
+      both targets, so the abstain band is empty by construction'
+    t_high: 0.00038029566970218266
+    t_low: 0.00038029566970218266
+    min_precision_target: 0.95
+    min_npv_target: 0.95
+    precision_at_t_high: 0.9501625135427952
+    npv_at_t_low: 0.951048951048951
+    n_rows: 3856
+    n_scam: 3511
+    n_safe: 345
+    n_definitive_scam: 3692
+    n_definitive_safe: 286
+    n_safe_behind_t_low: 162
+    n_scam_behind_t_high: 3508
+    targets_achievable:
+      t_high: true
+      t_low: true
+    bands_overlap: true
+    cell_counts:
+      scam: 3511
+      safe: 345
+fitted_date: '2026-10-26'
+seed: 42
+abstention_method: rules
+abstention_rule:
+  weak_tag_prob: 0.5
+  requires: no tag >= weak_tag_prob AND no OTP/payment/credential word AND no risky
+    link AND no keyword hit
+  measured_holdout_deferral: 0.45338441890166026
+  measured_clear_scam_deferral: 0.011392765593847906

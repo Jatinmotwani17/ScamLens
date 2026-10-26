@@ -1,0 +1,8 @@
+{
+  "gate_passed": false,
+  "n_in_domain": 10,
+  "n_safe": 5,
+  "n_scam": 5,
+  "folds": [],
+  "note": "skipped: real-data gate failed"
+}

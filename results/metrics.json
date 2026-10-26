@@ -1,0 +1,6031 @@
+{
+  "meta": {
+    "provenance": {
+      "mix": "mix_synth_plus_real",
+      "splits": {
+        "train": {
+          "rows": 15873,
+          "sources": {
+            "external_reported": 8390,
+            "synthetic": 5873,
+            "public_ham_eval": 1610
+          }
+        },
+        "val": {
+          "rows": 4540,
+          "sources": {
+            "external_reported": 3511,
+            "synthetic": 684,
+            "public_ham_eval": 345
+          }
+        },
+        "test_a": {
+          "rows": 667,
+          "sources": {
+            "synthetic": 667
+          }
+        },
+        "test_b": {
+          "rows": 215,
+          "sources": {
+            "synthetic": 215
+          }
+        },
+        "test_real": {
+          "rows": 3866,
+          "sources": {
+            "external_reported": 3511,
+            "public_ham_eval": 345,
+            "self_collected": 10
+          }
+        }
+      },
+      "tag_support": [
+        {
+          "tag": "otp_or_pin_request",
+          "train": 195,
+          "val": 45,
+          "test_a": 0,
+          "test_b": 17,
+          "test_real": 0
+        },
+        {
+          "tag": "urgency_threat",
+          "train": 7132,
+          "val": 2549,
+          "test_a": 181,
+          "test_b": 48,
+          "test_real": 2481
+        },
+        {
+          "tag": "bank_kyc_impersonation",
+          "train": 3764,
+          "val": 1342,
+          "test_a": 16,
+          "test_b": 34,
+          "test_real": 1341
+        },
+        {
+          "tag": "authority_impersonation",
+          "train": 6871,
+          "val": 2647,
+          "test_a": 100,
+          "test_b": 14,
+          "test_real": 2635
+        },
+        {
+          "tag": "payment_or_upi_request",
+          "train": 758,
+          "val": 164,
+          "test_a": 170,
+          "test_b": 11,
+          "test_real": 3
+        },
+        {
+          "tag": "suspicious_link",
+          "train": 8756,
+          "val": 3557,
+          "test_a": 97,
+          "test_b": 60,
+          "test_real": 3513
+        },
+        {
+          "tag": "prize_or_lottery",
+          "train": 197,
+          "val": 27,
+          "test_a": 0,
+          "test_b": 36,
+          "test_real": 1
+        },
+        {
+          "tag": "job_or_task_scam",
+          "train": 141,
+          "val": 26,
+          "test_a": 0,
+          "test_b": 31,
+          "test_real": 0
+        },
+        {
+          "tag": "investment_or_trading_scam",
+          "train": 170,
+          "val": 31,
+          "test_a": 0,
+          "test_b": 15,
+          "test_real": 0
+        },
+        {
+          "tag": "loan_app_harassment",
+          "train": 128,
+          "val": 32,
+          "test_a": 0,
+          "test_b": 31,
+          "test_real": 0
+        },
+        {
+          "tag": "parcel_courier_scam",
+          "train": 1269,
+          "val": 453,
+          "test_a": 72,
+          "test_b": 11,
+          "test_real": 402
+        },
+        {
+          "tag": "utility_disconnection_scam",
+          "train": 925,
+          "val": 359,
+          "test_a": 38,
+          "test_b": 34,
+          "test_real": 336
+        },
+        {
+          "tag": "relative_in_trouble",
+          "train": 257,
+          "val": 62,
+          "test_a": 0,
+          "test_b": 15,
+          "test_real": 31
+        }
+      ],
+      "real_style": {
+        "english": 17713,
+        "roman_hinglish": 9
+      },
+      "external_style": {
+        "english": 15410,
+        "roman_hinglish": 2
+      },
+      "ham_style": {
+        "english": 2299,
+        "roman_hinglish": 1
+      },
+      "real_rows": 17722,
+      "real_hinglish": 9
+    },
+    "binary": true,
+    "verdict_labels": [
+      "safe",
+      "scam"
+    ],
+    "min_stratum_rows": 30,
+    "min_tag_support": 20,
+    "note": "Synthetic results are not performance claims. Headline numbers come only from test_real, and always PER STRATUM.",
+    "selection_metric": "validation only: mean(val_synthetic macro-F1, val_real balanced accuracy)",
+    "e4_gate": {
+      "in_domain": 10,
+      "user_real_scam": 5,
+      "user_real_safe": 5,
+      "passed": false,
+      "requirement": ">=50 in-domain and >=20 user_real_safe"
+    },
+    "nn_similarity": {
+      "n_rows": 9288,
+      "note": "For every val/test row we computed the maximum TF-IDF char-ngram cosine similarity to ANY train row (`results/nn_sim.parquet`). A high value means the row has a near-copy in training, so its score partly measures memorisation.",
+      "strata": [
+        {
+          "stratum": "val_synthetic",
+          "split": "val",
+          "n_rows": 684,
+          "share_gt_0.9": 0.0,
+          "share_0.7_0.9": 0.01608187134502924,
+          "share_lt_0.7": 0.9839181286549707,
+          "median_sim": 0.44729599356651306
+        },
+        {
+          "stratum": "val_real",
+          "split": "val",
+          "n_rows": 3856,
+          "share_gt_0.9": 0.01270746887966805,
+          "share_0.7_0.9": 0.14470954356846474,
+          "share_lt_0.7": 0.8425829875518672,
+          "median_sim": 0.43553750216960907
+        },
+        {
+          "stratum": "test_a",
+          "split": "test_a",
+          "n_rows": 667,
+          "share_gt_0.9": 0.0,
+          "share_0.7_0.9": 0.026986506746626688,
+          "share_lt_0.7": 0.9730134932533733,
+          "median_sim": 0.48702600598335266
+        },
+        {
+          "stratum": "test_b",
+          "split": "test_b",
+          "n_rows": 215,
+          "share_gt_0.9": 0.0,
+          "share_0.7_0.9": 0.004651162790697674,
+          "share_lt_0.7": 0.9953488372093023,
+          "median_sim": 0.43932899832725525
+        },
+        {
+          "stratum": "user_real_scam",
+          "split": "test_real",
+          "n_rows": 5,
+          "share_gt_0.9": 0.0,
+          "share_0.7_0.9": 0.0,
+          "share_lt_0.7": 1.0,
+          "median_sim": 0.3708820044994354
+        },
+        {
+          "stratum": "user_real_safe",
+          "split": "test_real",
+          "n_rows": 5,
+          "share_gt_0.9": 0.0,
+          "share_0.7_0.9": 0.0,
+          "share_lt_0.7": 1.0,
+          "median_sim": 0.3517970144748688
+        },
+        {
+          "stratum": "external_scam",
+          "split": "test_real",
+          "n_rows": 3511,
+          "share_gt_0.9": 0.016519510111079466,
+          "share_0.7_0.9": 0.16405582455140985,
+          "share_lt_0.7": 0.8194246653375107,
+          "median_sim": 0.4491429924964905
+        },
+        {
+          "stratum": "public_ham_english",
+          "split": "test_real",
+          "n_rows": 345,
+          "share_gt_0.9": 0.002898550724637681,
+          "share_0.7_0.9": 0.008695652173913044,
+          "share_lt_0.7": 0.9884057971014493,
+          "median_sim": 0.3128710091114044
+        }
+      ],
+      "real_test_rows": 3866,
+      "real_test_share_gt_0.9": 0.015261251939989654,
+      "real_test_mostly_near_copies": false
+    },
+    "metric_guards": {
+      "min_negatives_for_recall_at_fpr": 5,
+      "rule": "recall@FPR=x only if n_negatives * x >= 5, else 'n/a (too few negatives)'"
+    },
+    "runs": {}
+  },
+  "val": {
+    "n_rows": 4540,
+    "scam_rate": 0.8270925110132159,
+    "style_mix": {
+      "english": 4122,
+      "roman_hinglish": 277,
+      "devanagari": 119,
+      "mixed": 22
+    },
+    "single_class": false,
+    "models": {
+      "majority": {
+        "per_class": {
+          "safe": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 785
+          },
+          "scam": {
+            "precision": 0.8270925110132159,
+            "recall": 1.0,
+            "f1": 0.9053646775165762,
+            "support": 3755
+          }
+        },
+        "macro_f1": 0.4526823387582881,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            0,
+            785
+          ],
+          [
+            0,
+            3755
+          ]
+        ],
+        "scam_recall": 1.0,
+        "safe_recall": 0.0,
+        "fpr_on_safe": 1.0,
+        "n_safe": 785,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 1.0,
+        "n_rows": 4540,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.45269005342574314,
+        "macro_f1_ci95": [
+          0.4494283572739827,
+          0.45583286618586677
+        ]
+      },
+      "keyword": {
+        "per_class": {
+          "safe": {
+            "precision": 0.2880694143167028,
+            "recall": 0.845859872611465,
+            "f1": 0.4297734627831715,
+            "support": 785
+          },
+          "scam": {
+            "precision": 0.937007874015748,
+            "recall": 0.03169107856191744,
+            "f1": 0.0613086038124678,
+            "support": 3755
+          }
+        },
+        "macro_f1": 0.24554103329781965,
+        "balanced_accuracy": 0.4387754755866912,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            664,
+            8
+          ],
+          [
+            1641,
+            119
+          ]
+        ],
+        "scam_recall": 0.03169107856191744,
+        "safe_recall": 0.845859872611465,
+        "fpr_on_safe": 0.01019108280254777,
+        "n_safe": 785,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.02572347266881029,
+        "n_rows": 4540,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.1698040722243565,
+          "macro_f1": 0.17193093550505936,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.24742268041237114,
+            "urgency_threat": 0.1658327376697641,
+            "bank_kyc_impersonation": 0.11942347288949898,
+            "authority_impersonation": 0.029498525073746312,
+            "payment_or_upi_request": 0.3274021352313167,
+            "suspicious_link": 0.27036226598589835,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.19230769230769232,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.28960817717206133,
+            "utility_disconnection_scam": 0.02506265664160401,
+            "relative_in_trouble": 0.5681818181818182
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 3755,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.1801987209368435,
+        "macro_f1_ci95": [
+          0.17039800169579877,
+          0.19003616533501508
+        ]
+      },
+      "verdict_lr_synth": {
+        "per_class": {
+          "safe": {
+            "precision": 0.3758553274682307,
+            "recall": 0.9796178343949045,
+            "f1": 0.5432709290003532,
+            "support": 785
+          },
+          "scam": {
+            "precision": 0.9935846030473136,
+            "recall": 0.6599201065246338,
+            "f1": 0.7930868939030244,
+            "support": 3755
+          }
+        },
+        "macro_f1": 0.6681789114516888,
+        "balanced_accuracy": 0.8197689704597692,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            769,
+            16
+          ],
+          [
+            1277,
+            2478
+          ]
+        ],
+        "scam_recall": 0.6599201065246338,
+        "safe_recall": 0.9796178343949045,
+        "fpr_on_safe": 0.02038216560509554,
+        "n_safe": 785,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 4540,
+        "probability": {
+          "auroc": 0.9398156173933694,
+          "pr_auc": 0.9864726695059931,
+          "recall_at_1pct_fpr": 0.5544607190412782,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": 0.748335552596538,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 785,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.668262826231932,
+        "macro_f1_ci95": [
+          0.6533420157579873,
+          0.6831052686615847
+        ]
+      },
+      "verdict_lr_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.8897727272727273,
+            "recall": 0.9974522292993631,
+            "f1": 0.9405405405405406,
+            "support": 785
+          },
+          "scam": {
+            "precision": 0.9994535519125683,
+            "recall": 0.974167776298269,
+            "f1": 0.9866486850977748,
+            "support": 3755
+          }
+        },
+        "macro_f1": 0.9635946128191577,
+        "balanced_accuracy": 0.985810002798816,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            783,
+            2
+          ],
+          [
+            97,
+            3658
+          ]
+        ],
+        "scam_recall": 0.974167776298269,
+        "safe_recall": 0.9974522292993631,
+        "fpr_on_safe": 0.0025477707006369425,
+        "n_safe": 785,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 4540,
+        "probability": {
+          "auroc": 0.998359045688551,
+          "pr_auc": 0.9996719262802305,
+          "recall_at_1pct_fpr": 0.9848202396804261,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": 0.9917443408788282,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 785,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.9636098064939391,
+        "macro_f1_ci95": [
+          0.9556858006199248,
+          0.9706473924305599
+        ]
+      },
+      "tactics_lr_synth": {
+        "per_class": {
+          "safe": {
+            "precision": 0.17290748898678415,
+            "recall": 1.0,
+            "f1": 0.2948356807511737,
+            "support": 785
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 3755
+          }
+        },
+        "macro_f1": 0.14741784037558686,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            785,
+            0
+          ],
+          [
+            3755,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 785,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 4540,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.13565981049225792,
+          "macro_f1": 0.044684762139549784,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.019629225736095966,
+            "urgency_threat": 0.5612726820780513,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.0,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 3755,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.1473663367272088,
+        "macro_f1_ci95": [
+          0.1396586104776432,
+          0.15519559290641416
+        ]
+      },
+      "tactics_lr_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.17290748898678415,
+            "recall": 1.0,
+            "f1": 0.2948356807511737,
+            "support": 785
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 3755
+          }
+        },
+        "macro_f1": 0.14741784037558686,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            785,
+            0
+          ],
+          [
+            3755,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 785,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 4540,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.26480086114101187,
+          "macro_f1": 0.06424476345883752,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.019629225736095966,
+            "urgency_threat": 0.8155526992287918,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.0,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 3755,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.1473663367272088,
+        "macro_f1_ci95": [
+          0.1396586104776432,
+          0.15519559290641416
+        ]
+      },
+      "style_only_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.6590909090909091,
+            "recall": 0.332484076433121,
+            "f1": 0.4419983065198984,
+            "support": 785
+          },
+          "scam": {
+            "precision": 0.8735521235521235,
+            "recall": 0.9640479360852197,
+            "f1": 0.9165717179389796,
+            "support": 3755
+          }
+        },
+        "macro_f1": 0.679285012229439,
+        "balanced_accuracy": 0.6482660062591703,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            261,
+            524
+          ],
+          [
+            135,
+            3620
+          ]
+        ],
+        "scam_recall": 0.9640479360852197,
+        "safe_recall": 0.332484076433121,
+        "fpr_on_safe": 0.6675159235668789,
+        "n_safe": 785,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.5112540192926045,
+        "n_rows": 4540,
+        "probability": {
+          "auroc": 0.6383319056544565,
+          "pr_auc": 0.871164040545337,
+          "recall_at_1pct_fpr": 0.0,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": 0.0015978695073235686,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 785,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.6791500421598395,
+        "macro_f1_ci95": [
+          0.6602791520834431,
+          0.6968475825800076
+        ]
+      },
+      "source_only_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.7628765792031098,
+            "recall": 1.0,
+            "f1": 0.8654906284454245,
+            "support": 785
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 0.9350199733688416,
+            "f1": 0.9664189375172034,
+            "support": 3755
+          }
+        },
+        "macro_f1": 0.9159547829813139,
+        "balanced_accuracy": 0.9675099866844208,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            785,
+            0
+          ],
+          [
+            244,
+            3511
+          ]
+        ],
+        "scam_recall": 0.9350199733688416,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 785,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 4540,
+        "probability": {
+          "auroc": 0.9817890371224779,
+          "pr_auc": 0.9931844548944673,
+          "recall_at_1pct_fpr": 0.9350199733688416,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": 0.9350199733688416,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 785,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.9158699619936158,
+        "macro_f1_ci95": [
+          0.9056519039225012,
+          0.9258578716804658
+        ]
+      }
+    }
+  },
+  "test_a": {
+    "n_rows": 667,
+    "scam_rate": 0.5367316341829086,
+    "style_mix": {
+      "english": 412,
+      "roman_hinglish": 205,
+      "devanagari": 46,
+      "mixed": 4
+    },
+    "single_class": false,
+    "models": {
+      "majority": {
+        "per_class": {
+          "safe": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 309
+          },
+          "scam": {
+            "precision": 0.5367316341829086,
+            "recall": 1.0,
+            "f1": 0.6985365853658536,
+            "support": 358
+          }
+        },
+        "macro_f1": 0.3492682926829268,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            0,
+            309
+          ],
+          [
+            0,
+            358
+          ]
+        ],
+        "scam_recall": 1.0,
+        "safe_recall": 0.0,
+        "fpr_on_safe": 1.0,
+        "n_safe": 309,
+        "hard_negatives": 250,
+        "fpr_on_hard_negatives": 1.0,
+        "n_rows": 667,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.3491330432332945,
+        "macro_f1_ci95": [
+          0.3336663336663337,
+          0.3647619047619048
+        ]
+      },
+      "keyword": {
+        "per_class": {
+          "safe": {
+            "precision": 0.45514950166112955,
+            "recall": 0.44336569579288027,
+            "f1": 0.4491803278688525,
+            "support": 309
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 0.1005586592178771,
+            "f1": 0.18274111675126903,
+            "support": 358
+          }
+        },
+        "macro_f1": 0.3159607223100608,
+        "balanced_accuracy": 0.27196217750537865,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            137,
+            0
+          ],
+          [
+            164,
+            36
+          ]
+        ],
+        "scam_recall": 0.1005586592178771,
+        "safe_recall": 0.44336569579288027,
+        "fpr_on_safe": 0.0,
+        "n_safe": 309,
+        "hard_negatives": 250,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 667,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.26278836509528586,
+          "macro_f1": 0.1207269903856503,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.0,
+            "urgency_threat": 0.3,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.18181818181818182,
+            "payment_or_upi_request": 0.48672566371681414,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.4897959183673469,
+            "utility_disconnection_scam": 0.1111111111111111,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 358,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.41991120770815665,
+        "macro_f1_ci95": [
+          0.38663014810982427,
+          0.45423477992134925
+        ]
+      },
+      "verdict_lr_synth": {
+        "per_class": {
+          "safe": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 309
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 358
+          }
+        },
+        "macro_f1": 1.0,
+        "balanced_accuracy": 1.0,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            309,
+            0
+          ],
+          [
+            0,
+            358
+          ]
+        ],
+        "scam_recall": 1.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 309,
+        "hard_negatives": 250,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 667,
+        "probability": {
+          "auroc": 1.0,
+          "pr_auc": 1.0,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 1.0,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 309,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 1.0,
+        "macro_f1_ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "verdict_lr_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.9967741935483871,
+            "recall": 1.0,
+            "f1": 0.9983844911147012,
+            "support": 309
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 0.9972067039106145,
+            "f1": 0.9986013986013986,
+            "support": 358
+          }
+        },
+        "macro_f1": 0.99849294485805,
+        "balanced_accuracy": 0.9986033519553073,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            309,
+            0
+          ],
+          [
+            1,
+            357
+          ]
+        ],
+        "scam_recall": 0.9972067039106145,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 309,
+        "hard_negatives": 250,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 667,
+        "probability": {
+          "auroc": 1.0,
+          "pr_auc": 1.0,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 1.0,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 309,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.9984736396316509,
+        "macro_f1_ci95": [
+          0.995454789738016,
+          1.0
+        ]
+      },
+      "tactics_lr_synth": {
+        "per_class": {
+          "safe": {
+            "precision": 0.46326836581709147,
+            "recall": 1.0,
+            "f1": 0.6331967213114754,
+            "support": 309
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 358
+          }
+        },
+        "macro_f1": 0.3165983606557377,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            309,
+            0
+          ],
+          [
+            358,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 309,
+        "hard_negatives": 250,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 667,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.21333333333333335,
+          "macro_f1": 0.05525902668759811,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.0,
+            "urgency_threat": 0.7183673469387755,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.0,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 358,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.3165220338349645,
+        "macro_f1_ci95": [
+          0.29863301787592006,
+          0.333
+        ]
+      },
+      "tactics_lr_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.46326836581709147,
+            "recall": 1.0,
+            "f1": 0.6331967213114754,
+            "support": 309
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 358
+          }
+        },
+        "macro_f1": 0.3165983606557377,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            309,
+            0
+          ],
+          [
+            358,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 309,
+        "hard_negatives": 250,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 667,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.19975786924939468,
+          "macro_f1": 0.05159474671669794,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.0,
+            "urgency_threat": 0.6707317073170732,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.0,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 358,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.3165220338349645,
+        "macro_f1_ci95": [
+          0.29863301787592006,
+          0.333
+        ]
+      },
+      "style_only_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.22310756972111553,
+            "recall": 0.18122977346278318,
+            "f1": 0.2,
+            "support": 309
+          },
+          "scam": {
+            "precision": 0.3918269230769231,
+            "recall": 0.4553072625698324,
+            "f1": 0.42118863049095606,
+            "support": 358
+          }
+        },
+        "macro_f1": 0.31059431524547804,
+        "balanced_accuracy": 0.3182685180163078,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            56,
+            253
+          ],
+          [
+            195,
+            163
+          ]
+        ],
+        "scam_recall": 0.4553072625698324,
+        "safe_recall": 0.18122977346278318,
+        "fpr_on_safe": 0.8187702265372169,
+        "n_safe": 309,
+        "hard_negatives": 250,
+        "fpr_on_hard_negatives": 0.94,
+        "n_rows": 667,
+        "probability": {
+          "auroc": 0.3344859069624487,
+          "pr_auc": 0.4667123409832624,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 0.0111731843575419,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 309,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.3107457581887996,
+        "macro_f1_ci95": [
+          0.27881521894592903,
+          0.34621390478357256
+        ]
+      },
+      "source_only_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.46326836581709147,
+            "recall": 1.0,
+            "f1": 0.6331967213114754,
+            "support": 309
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 358
+          }
+        },
+        "macro_f1": 0.3165983606557377,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            309,
+            0
+          ],
+          [
+            358,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 309,
+        "hard_negatives": 250,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 667,
+        "probability": {
+          "auroc": 0.5,
+          "pr_auc": 0.5367316341829086,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 0.0,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 309,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.3165220338349645,
+        "macro_f1_ci95": [
+          0.29863301787592006,
+          0.333
+        ]
+      }
+    },
+    "note": "10% of TRAIN clusters held out whole (both classes); measures seen-template wording, not new scams."
+  },
+  "test_b": {
+    "n_rows": 215,
+    "scam_rate": 0.6139534883720931,
+    "style_mix": {
+      "english": 80,
+      "roman_hinglish": 75,
+      "mixed": 31,
+      "devanagari": 29
+    },
+    "single_class": false,
+    "models": {
+      "majority": {
+        "per_class": {
+          "safe": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 83
+          },
+          "scam": {
+            "precision": 0.6139534883720931,
+            "recall": 1.0,
+            "f1": 0.760806916426513,
+            "support": 132
+          }
+        },
+        "macro_f1": 0.3804034582132565,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            0,
+            83
+          ],
+          [
+            0,
+            132
+          ]
+        ],
+        "scam_recall": 1.0,
+        "safe_recall": 0.0,
+        "fpr_on_safe": 1.0,
+        "n_safe": 83,
+        "hard_negatives": 22,
+        "fpr_on_hard_negatives": 1.0,
+        "n_rows": 215,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.37978013510174186,
+        "macro_f1_ci95": [
+          0.35240963855421686,
+          0.40443213296398894
+        ]
+      },
+      "keyword": {
+        "per_class": {
+          "safe": {
+            "precision": 0.6333333333333333,
+            "recall": 0.9156626506024096,
+            "f1": 0.7487684729064039,
+            "support": 83
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 0.2196969696969697,
+            "f1": 0.36024844720496896,
+            "support": 132
+          }
+        },
+        "macro_f1": 0.5545084600556864,
+        "balanced_accuracy": 0.5676798101496896,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            76,
+            0
+          ],
+          [
+            44,
+            29
+          ]
+        ],
+        "scam_recall": 0.2196969696969697,
+        "safe_recall": 0.9156626506024096,
+        "fpr_on_safe": 0.0,
+        "n_safe": 83,
+        "hard_negatives": 22,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 215,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.42696629213483145,
+          "macro_f1": 0.323385308151946,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.7727272727272727,
+            "urgency_threat": 0.25,
+            "bank_kyc_impersonation": 0.9696969696969697,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.3146067415730337,
+            "prize_or_lottery": 0.5,
+            "job_or_task_scam": 0.7083333333333334,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.3076923076923077,
+            "parcel_courier_scam": 0.38095238095238093,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 132,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.48834936335904094,
+        "macro_f1_ci95": [
+          0.42268066898568263,
+          0.5620849483204133
+        ]
+      },
+      "verdict_lr_synth": {
+        "per_class": {
+          "safe": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 83
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 132
+          }
+        },
+        "macro_f1": 1.0,
+        "balanced_accuracy": 1.0,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            83,
+            0
+          ],
+          [
+            0,
+            132
+          ]
+        ],
+        "scam_recall": 1.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 83,
+        "hard_negatives": 22,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 215,
+        "probability": {
+          "auroc": 1.0,
+          "pr_auc": 0.9999999999999999,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+          "n_negatives": 83,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 1.0,
+        "macro_f1_ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "verdict_lr_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.9880952380952381,
+            "recall": 1.0,
+            "f1": 0.9940119760479041,
+            "support": 83
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 0.9924242424242424,
+            "f1": 0.9961977186311787,
+            "support": 132
+          }
+        },
+        "macro_f1": 0.9951048473395414,
+        "balanced_accuracy": 0.9962121212121212,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            83,
+            0
+          ],
+          [
+            1,
+            131
+          ]
+        ],
+        "scam_recall": 0.9924242424242424,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 83,
+        "hard_negatives": 22,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 215,
+        "probability": {
+          "auroc": 1.0,
+          "pr_auc": 0.9999999999999999,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+          "n_negatives": 83,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.994801690731289,
+        "macro_f1_ci95": [
+          0.9808873550918495,
+          1.0
+        ]
+      },
+      "tactics_lr_synth": {
+        "per_class": {
+          "safe": {
+            "precision": 0.386046511627907,
+            "recall": 1.0,
+            "f1": 0.5570469798657718,
+            "support": 83
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 132
+          }
+        },
+        "macro_f1": 0.2785234899328859,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            83,
+            0
+          ],
+          [
+            132,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 83,
+        "hard_negatives": 22,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 215,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.18311874105865522,
+          "macro_f1": 0.05259189086775294,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.14655172413793102,
+            "urgency_threat": 0.5371428571428571,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.0,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 132,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.27855979119291274,
+        "macro_f1_ci95": [
+          0.24295774647887325,
+          0.31309904153354634
+        ]
+      },
+      "tactics_lr_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.386046511627907,
+            "recall": 1.0,
+            "f1": 0.5570469798657718,
+            "support": 83
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 132
+          }
+        },
+        "macro_f1": 0.2785234899328859,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            83,
+            0
+          ],
+          [
+            132,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 83,
+        "hard_negatives": 22,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 215,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.1841726618705036,
+          "macro_f1": 0.05355840972900864,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.14655172413793102,
+            "urgency_threat": 0.5497076023391813,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.0,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 132,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.27855979119291274,
+        "macro_f1_ci95": [
+          0.24295774647887325,
+          0.31309904153354634
+        ]
+      },
+      "style_only_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.38461538461538464,
+            "recall": 0.4819277108433735,
+            "f1": 0.42780748663101603,
+            "support": 83
+          },
+          "scam": {
+            "precision": 0.6126126126126126,
+            "recall": 0.5151515151515151,
+            "f1": 0.5596707818930041,
+            "support": 132
+          }
+        },
+        "macro_f1": 0.4937391342620101,
+        "balanced_accuracy": 0.4985396129974443,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            40,
+            43
+          ],
+          [
+            64,
+            68
+          ]
+        ],
+        "scam_recall": 0.5151515151515151,
+        "safe_recall": 0.4819277108433735,
+        "fpr_on_safe": 0.5180722891566265,
+        "n_safe": 83,
+        "hard_negatives": 22,
+        "fpr_on_hard_negatives": 0.5,
+        "n_rows": 215,
+        "probability": {
+          "auroc": 0.3995983935742972,
+          "pr_auc": 0.5951241872565953,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+          "n_negatives": 83,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.49210592342382997,
+        "macro_f1_ci95": [
+          0.4260341974627689,
+          0.555039701191263
+        ]
+      },
+      "source_only_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.386046511627907,
+            "recall": 1.0,
+            "f1": 0.5570469798657718,
+            "support": 83
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 132
+          }
+        },
+        "macro_f1": 0.2785234899328859,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            83,
+            0
+          ],
+          [
+            132,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 83,
+        "hard_negatives": 22,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 215,
+        "probability": {
+          "auroc": 0.5,
+          "pr_auc": 0.6139534883720931,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+          "n_negatives": 83,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.27855979119291274,
+        "macro_f1_ci95": [
+          0.24295774647887325,
+          0.31309904153354634
+        ]
+      }
+    }
+  },
+  "val_synthetic": {
+    "n_rows": 684,
+    "scam_rate": 0.3567251461988304,
+    "style_mix": {
+      "roman_hinglish": 277,
+      "english": 266,
+      "devanagari": 119,
+      "mixed": 22
+    },
+    "models": {
+      "majority": {
+        "per_class": {
+          "safe": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 440
+          },
+          "scam": {
+            "precision": 0.3567251461988304,
+            "recall": 1.0,
+            "f1": 0.5258620689655172,
+            "support": 244
+          }
+        },
+        "macro_f1": 0.2629310344827586,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            0,
+            440
+          ],
+          [
+            0,
+            244
+          ]
+        ],
+        "scam_recall": 1.0,
+        "safe_recall": 0.0,
+        "fpr_on_safe": 1.0,
+        "n_safe": 440,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 1.0,
+        "n_rows": 684,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.26286237684346975,
+        "macro_f1_ci95": [
+          0.2441779934483939,
+          0.28153145308490657
+        ]
+      },
+      "keyword": {
+        "per_class": {
+          "safe": {
+            "precision": 0.7917675544794189,
+            "recall": 0.7431818181818182,
+            "f1": 0.7667057444314185,
+            "support": 440
+          },
+          "scam": {
+            "precision": 0.7777777777777778,
+            "recall": 0.11475409836065574,
+            "f1": 0.2,
+            "support": 244
+          }
+        },
+        "macro_f1": 0.4833528722157092,
+        "balanced_accuracy": 0.42896795827123696,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            327,
+            8
+          ],
+          [
+            86,
+            28
+          ]
+        ],
+        "scam_recall": 0.11475409836065574,
+        "safe_recall": 0.7431818181818182,
+        "fpr_on_safe": 0.01818181818181818,
+        "n_safe": 440,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.02572347266881029,
+        "n_rows": 684,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.312710911136108,
+          "macro_f1": 0.27505672233645273,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.5161290322580645,
+            "urgency_threat": 0.3142857142857143,
+            "bank_kyc_impersonation": 0.9333333333333333,
+            "authority_impersonation": 0.21212121212121213,
+            "payment_or_upi_request": 0.4144144144144144,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.2777777777777778,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.1791044776119403,
+            "utility_disconnection_scam": 0.22857142857142856,
+            "relative_in_trouble": 0.5
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 244,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.4967829527873012,
+        "macro_f1_ci95": [
+          0.4622844466144373,
+          0.5358058489140783
+        ]
+      },
+      "verdict_lr_synth": {
+        "per_class": {
+          "safe": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 440
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 244
+          }
+        },
+        "macro_f1": 1.0,
+        "balanced_accuracy": 1.0,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            440,
+            0
+          ],
+          [
+            0,
+            244
+          ]
+        ],
+        "scam_recall": 1.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 440,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 684,
+        "probability": {
+          "auroc": 1.0,
+          "pr_auc": 1.0,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 1.0,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 440,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 1.0,
+        "macro_f1_ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      "verdict_lr_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.9977324263038548,
+            "recall": 1.0,
+            "f1": 0.9988649262202043,
+            "support": 440
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 0.9959016393442623,
+            "f1": 0.997946611909651,
+            "support": 244
+          }
+        },
+        "macro_f1": 0.9984057690649276,
+        "balanced_accuracy": 0.9979508196721312,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            440,
+            0
+          ],
+          [
+            1,
+            243
+          ]
+        ],
+        "scam_recall": 0.9959016393442623,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 440,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 684,
+        "probability": {
+          "auroc": 1.0,
+          "pr_auc": 1.0,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 1.0,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 440,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.998425292530364,
+        "macro_f1_ci95": [
+          0.9950603613254216,
+          1.0
+        ]
+      },
+      "tactics_lr_synth": {
+        "per_class": {
+          "safe": {
+            "precision": 0.6432748538011696,
+            "recall": 1.0,
+            "f1": 0.7829181494661922,
+            "support": 440
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 244
+          }
+        },
+        "macro_f1": 0.3914590747330961,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            440,
+            0
+          ],
+          [
+            244,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 440,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 684,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.19215686274509805,
+          "macro_f1": 0.055786669355990894,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.12345679012345678,
+            "urgency_threat": 0.6017699115044248,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.0,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 244,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.391345179313854,
+        "macro_f1_ci95": [
+          0.37816767309123994,
+          0.40367471270303684
+        ]
+      },
+      "tactics_lr_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.6432748538011696,
+            "recall": 1.0,
+            "f1": 0.7829181494661922,
+            "support": 440
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 244
+          }
+        },
+        "macro_f1": 0.3914590747330961,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            440,
+            0
+          ],
+          [
+            244,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 440,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 684,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.19804560260586318,
+          "macro_f1": 0.05734998564455929,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.12345679012345678,
+            "urgency_threat": 0.622093023255814,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.0,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 244,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.391345179313854,
+        "macro_f1_ci95": [
+          0.37816767309123994,
+          0.40367471270303684
+        ]
+      },
+      "style_only_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.6590909090909091,
+            "recall": 0.5931818181818181,
+            "f1": 0.6244019138755981,
+            "support": 440
+          },
+          "scam": {
+            "precision": 0.3784722222222222,
+            "recall": 0.44672131147540983,
+            "f1": 0.40977443609022557,
+            "support": 244
+          }
+        },
+        "macro_f1": 0.5170881749829118,
+        "balanced_accuracy": 0.5199515648286139,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            261,
+            179
+          ],
+          [
+            135,
+            109
+          ]
+        ],
+        "scam_recall": 0.44672131147540983,
+        "safe_recall": 0.5931818181818181,
+        "fpr_on_safe": 0.4068181818181818,
+        "n_safe": 440,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.5112540192926045,
+        "n_rows": 684,
+        "probability": {
+          "auroc": 0.49918498509687037,
+          "pr_auc": 0.36222052620213746,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 0.02459016393442623,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 440,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.515786495442215,
+        "macro_f1_ci95": [
+          0.4774681463850601,
+          0.5527723868113019
+        ]
+      },
+      "source_only_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.6432748538011696,
+            "recall": 1.0,
+            "f1": 0.7829181494661922,
+            "support": 440
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 244
+          }
+        },
+        "macro_f1": 0.3914590747330961,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            440,
+            0
+          ],
+          [
+            244,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 440,
+        "hard_negatives": 311,
+        "fpr_on_hard_negatives": 0.0,
+        "n_rows": 684,
+        "probability": {
+          "auroc": 0.5,
+          "pr_auc": 0.3567251461988304,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 0.0,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 440,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.391345179313854,
+        "macro_f1_ci95": [
+          0.37816767309123994,
+          0.40367471270303684
+        ]
+      }
+    }
+  },
+  "val_real": {
+    "n_rows": 3856,
+    "scam_rate": 0.9105290456431535,
+    "style_mix": {
+      "english": 3856
+    },
+    "models": {
+      "majority": {
+        "per_class": {
+          "safe": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 345
+          },
+          "scam": {
+            "precision": 0.9105290456431535,
+            "recall": 1.0,
+            "f1": 0.9531695398398262,
+            "support": 3511
+          }
+        },
+        "macro_f1": 0.4765847699199131,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            0,
+            345
+          ],
+          [
+            0,
+            3511
+          ]
+        ],
+        "scam_recall": 1.0,
+        "safe_recall": 0.0,
+        "fpr_on_safe": 1.0,
+        "n_safe": 345,
+        "hard_negatives": 0,
+        "fpr_on_hard_negatives": null,
+        "n_rows": 3856,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.47661446273020536,
+        "macro_f1_ci95": [
+          0.47430129516019087,
+          0.47913008239902743
+        ]
+      },
+      "keyword": {
+        "per_class": {
+          "safe": {
+            "precision": 0.1781183932346723,
+            "recall": 0.9768115942028985,
+            "f1": 0.3012963790791238,
+            "support": 345
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 0.025918541726003986,
+            "f1": 0.05052748473070516,
+            "support": 3511
+          }
+        },
+        "macro_f1": 0.1759119319049145,
+        "balanced_accuracy": 0.5013650679644512,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            337,
+            0
+          ],
+          [
+            1555,
+            91
+          ]
+        ],
+        "scam_recall": 0.025918541726003986,
+        "safe_recall": 0.9768115942028985,
+        "fpr_on_safe": 0.0,
+        "n_safe": 345,
+        "hard_negatives": 0,
+        "fpr_on_hard_negatives": null,
+        "n_rows": 3856,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.15932706580900544,
+          "macro_f1": 0.11572260812586199,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.0,
+            "urgency_threat": 0.1580135440180587,
+            "bank_kyc_impersonation": 0.102312543798178,
+            "authority_impersonation": 0.024943310657596373,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.2734202114580772,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.3038461538461538,
+            "utility_disconnection_scam": 0.005494505494505495,
+            "relative_in_trouble": 0.6363636363636364
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 3511,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.10914911972997135,
+        "macro_f1_ci95": [
+          0.10001138075421237,
+          0.1178221157796965
+        ]
+      },
+      "verdict_lr_synth": {
+        "per_class": {
+          "safe": {
+            "precision": 0.20485678704856788,
+            "recall": 0.9536231884057971,
+            "f1": 0.3372629420809841,
+            "support": 345
+          },
+          "scam": {
+            "precision": 0.9928888888888889,
+            "recall": 0.6362859584164056,
+            "f1": 0.7755597986460684,
+            "support": 3511
+          }
+        },
+        "macro_f1": 0.5564113703635263,
+        "balanced_accuracy": 0.7949545734111013,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            329,
+            16
+          ],
+          [
+            1277,
+            2234
+          ]
+        ],
+        "scam_recall": 0.6362859584164056,
+        "safe_recall": 0.9536231884057971,
+        "fpr_on_safe": 0.0463768115942029,
+        "n_safe": 345,
+        "hard_negatives": 0,
+        "fpr_on_hard_negatives": null,
+        "n_rows": 3856,
+        "probability": {
+          "auroc": 0.8736922054495395,
+          "pr_auc": 0.9861572542475239,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 0.6607804044431785,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 345,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.5560946615391351,
+        "macro_f1_ci95": [
+          0.5396875513514079,
+          0.5713190418605093
+        ]
+      },
+      "verdict_lr_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.7813211845102506,
+            "recall": 0.9942028985507246,
+            "f1": 0.875,
+            "support": 345
+          },
+          "scam": {
+            "precision": 0.9994146912496342,
+            "recall": 0.972657362574765,
+            "f1": 0.9858545034642032,
+            "support": 3511
+          }
+        },
+        "macro_f1": 0.9304272517321016,
+        "balanced_accuracy": 0.9834301305627449,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            343,
+            2
+          ],
+          [
+            96,
+            3415
+          ]
+        ],
+        "scam_recall": 0.972657362574765,
+        "safe_recall": 0.9942028985507246,
+        "fpr_on_safe": 0.005797101449275362,
+        "n_safe": 345,
+        "hard_negatives": 0,
+        "fpr_on_hard_negatives": null,
+        "n_rows": 3856,
+        "probability": {
+          "auroc": 0.9972830730746846,
+          "pr_auc": 0.9997393676214272,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 0.9888920535459983,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 345,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.9302246380750939,
+        "macro_f1_ci95": [
+          0.9158996525790302,
+          0.9435695429681921
+        ]
+      },
+      "tactics_lr_synth": {
+        "per_class": {
+          "safe": {
+            "precision": 0.08947095435684647,
+            "recall": 1.0,
+            "f1": 0.16424660795048798,
+            "support": 345
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 3511
+          }
+        },
+        "macro_f1": 0.08212330397524399,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            345,
+            0
+          ],
+          [
+            3511,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 345,
+        "hard_negatives": 0,
+        "fpr_on_hard_negatives": null,
+        "n_rows": 3856,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.13018126505260488,
+          "macro_f1": 0.04288816503800218,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.0,
+            "urgency_threat": 0.5575461454940283,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.0,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 3511,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.08200605753616089,
+        "macro_f1_ci95": [
+          0.07418967587034814,
+          0.08906213087644696
+        ]
+      },
+      "tactics_lr_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.08947095435684647,
+            "recall": 1.0,
+            "f1": 0.16424660795048798,
+            "support": 345
+          },
+          "scam": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 3511
+          }
+        },
+        "macro_f1": 0.08212330397524399,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            345,
+            0
+          ],
+          [
+            3511,
+            0
+          ]
+        ],
+        "scam_recall": 0.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 345,
+        "hard_negatives": 0,
+        "fpr_on_hard_negatives": null,
+        "n_rows": 3856,
+        "probability": {
+          "auroc": null,
+          "pr_auc": null,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": null,
+          "recall_at_5pct_fpr": null,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 0,
+          "available": false
+        },
+        "tactics": {
+          "micro_f1": 0.27050183598531213,
+          "macro_f1": 0.06360544217687075,
+          "per_tag_f1": {
+            "otp_or_pin_request": 0.0,
+            "urgency_threat": 0.8268707482993197,
+            "bank_kyc_impersonation": 0.0,
+            "authority_impersonation": 0.0,
+            "payment_or_upi_request": 0.0,
+            "suspicious_link": 0.0,
+            "prize_or_lottery": 0.0,
+            "job_or_task_scam": 0.0,
+            "investment_or_trading_scam": 0.0,
+            "loan_app_harassment": 0.0,
+            "parcel_courier_scam": 0.0,
+            "utility_disconnection_scam": 0.0,
+            "relative_in_trouble": 0.0
+          },
+          "headline_tags": [
+            "otp_or_pin_request",
+            "urgency_threat",
+            "bank_kyc_impersonation",
+            "authority_impersonation",
+            "payment_or_upi_request",
+            "suspicious_link",
+            "prize_or_lottery",
+            "job_or_task_scam",
+            "investment_or_trading_scam",
+            "loan_app_harassment",
+            "parcel_courier_scam",
+            "utility_disconnection_scam",
+            "relative_in_trouble"
+          ],
+          "rows_with_gold_tags": 3511,
+          "available": true
+        },
+        "macro_f1_bootstrap_mean": 0.08200605753616089,
+        "macro_f1_ci95": [
+          0.07418967587034814,
+          0.08906213087644696
+        ]
+      },
+      "style_only_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "support": 345
+          },
+          "scam": {
+            "precision": 0.9105290456431535,
+            "recall": 1.0,
+            "f1": 0.9531695398398262,
+            "support": 3511
+          }
+        },
+        "macro_f1": 0.4765847699199131,
+        "balanced_accuracy": 0.5,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            0,
+            345
+          ],
+          [
+            0,
+            3511
+          ]
+        ],
+        "scam_recall": 1.0,
+        "safe_recall": 0.0,
+        "fpr_on_safe": 1.0,
+        "n_safe": 345,
+        "hard_negatives": 0,
+        "fpr_on_hard_negatives": null,
+        "n_rows": 3856,
+        "probability": {
+          "auroc": 0.5,
+          "pr_auc": 0.9105290456431535,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 0.0,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 345,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 0.47661446273020536,
+        "macro_f1_ci95": [
+          0.47430129516019087,
+          0.47913008239902743
+        ]
+      },
+      "source_only_plus": {
+        "per_class": {
+          "safe": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 345
+          },
+          "scam": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "support": 3511
+          }
+        },
+        "macro_f1": 1.0,
+        "balanced_accuracy": 1.0,
+        "single_class": false,
+        "confusion_matrix": [
+          [
+            345,
+            0
+          ],
+          [
+            0,
+            3511
+          ]
+        ],
+        "scam_recall": 1.0,
+        "safe_recall": 1.0,
+        "fpr_on_safe": 0.0,
+        "n_safe": 345,
+        "hard_negatives": 0,
+        "fpr_on_hard_negatives": null,
+        "n_rows": 3856,
+        "probability": {
+          "auroc": 1.0,
+          "pr_auc": 1.0,
+          "recall_at_1pct_fpr": null,
+          "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+          "recall_at_5pct_fpr": 1.0,
+          "recall_at_5pct_fpr_note": null,
+          "n_negatives": 345,
+          "available": true
+        },
+        "tactics": {
+          "micro_f1": null,
+          "macro_f1": null,
+          "per_tag_f1": {},
+          "headline_tags": [],
+          "rows_with_gold_tags": 0,
+          "available": false
+        },
+        "macro_f1_bootstrap_mean": 1.0,
+        "macro_f1_ci95": [
+          1.0,
+          1.0
+        ]
+      }
+    }
+  },
+  "test_real": {
+    "note": "Synthetic results are not performance claims. Headline numbers come only from test_real, and always PER STRATUM.",
+    "overall_rows": 3866,
+    "unstratified_rows": 0,
+    "e4_gate": {
+      "in_domain": 10,
+      "user_real_scam": 5,
+      "user_real_safe": 5,
+      "passed": false,
+      "requirement": ">=50 in-domain and >=20 user_real_safe"
+    },
+    "strata": {
+      "user_real_scam": {
+        "n_rows": 5,
+        "too_small_for_claims": true,
+        "scam_rate": 1.0,
+        "style_mix": {
+          "roman_hinglish": 3,
+          "english": 2
+        },
+        "tag_support": {
+          "otp_or_pin_request": 0,
+          "urgency_threat": 2,
+          "bank_kyc_impersonation": 1,
+          "authority_impersonation": 1,
+          "payment_or_upi_request": 3,
+          "suspicious_link": 2,
+          "prize_or_lottery": 1,
+          "job_or_task_scam": 0,
+          "investment_or_trading_scam": 0,
+          "loan_app_harassment": 0,
+          "parcel_courier_scam": 0,
+          "utility_disconnection_scam": 0,
+          "relative_in_trouble": 1
+        },
+        "validated_tags": [],
+        "unvalidated_tags": [
+          "otp_or_pin_request",
+          "urgency_threat",
+          "bank_kyc_impersonation",
+          "authority_impersonation",
+          "payment_or_upi_request",
+          "suspicious_link",
+          "prize_or_lottery",
+          "job_or_task_scam",
+          "investment_or_trading_scam",
+          "loan_app_harassment",
+          "parcel_courier_scam",
+          "utility_disconnection_scam",
+          "relative_in_trouble"
+        ],
+        "models": {
+          "majority": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 5
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                5
+              ]
+            ],
+            "scam_recall": 1.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "keyword": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 0.2,
+                "f1": 0.3333333333333333,
+                "support": 5
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "scam_recall": 0.2,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.6666666666666666,
+                "bank_kyc_impersonation": 1.0,
+                "authority_impersonation": 1.0,
+                "payment_or_upi_request": 1.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 1.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 1.0
+              },
+              "headline_tags": [],
+              "rows_with_gold_tags": 5,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "verdict_lr_synth": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 5
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                5
+              ]
+            ],
+            "scam_recall": 1.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "verdict_lr_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 5
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                5
+              ]
+            ],
+            "scam_recall": 1.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "tactics_lr_synth": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 5
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                5,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.5714285714285714,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [],
+              "rows_with_gold_tags": 5,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "tactics_lr_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 5
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                5,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.5714285714285714,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [],
+              "rows_with_gold_tags": 5,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "style_only_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 0.4,
+                "f1": 0.5714285714285714,
+                "support": 5
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                3,
+                2
+              ]
+            ],
+            "scam_recall": 0.4,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "source_only_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 5
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                5,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          }
+        }
+      },
+      "user_real_safe": {
+        "n_rows": 5,
+        "too_small_for_claims": true,
+        "scam_rate": 0.0,
+        "style_mix": {
+          "roman_hinglish": 3,
+          "english": 2
+        },
+        "tag_support": {
+          "otp_or_pin_request": 0,
+          "urgency_threat": 0,
+          "bank_kyc_impersonation": 0,
+          "authority_impersonation": 0,
+          "payment_or_upi_request": 0,
+          "suspicious_link": 0,
+          "prize_or_lottery": 0,
+          "job_or_task_scam": 0,
+          "investment_or_trading_scam": 0,
+          "loan_app_harassment": 0,
+          "parcel_courier_scam": 0,
+          "utility_disconnection_scam": 0,
+          "relative_in_trouble": 0
+        },
+        "validated_tags": [],
+        "unvalidated_tags": [
+          "otp_or_pin_request",
+          "urgency_threat",
+          "bank_kyc_impersonation",
+          "authority_impersonation",
+          "payment_or_upi_request",
+          "suspicious_link",
+          "prize_or_lottery",
+          "job_or_task_scam",
+          "investment_or_trading_scam",
+          "loan_app_harassment",
+          "parcel_courier_scam",
+          "utility_disconnection_scam",
+          "relative_in_trouble"
+        ],
+        "models": {
+          "majority": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 5
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                5
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 1.0,
+            "n_safe": 5,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "keyword": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 0.6,
+                "f1": 0.75,
+                "support": 5
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                3,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.6,
+            "fpr_on_safe": 0.0,
+            "n_safe": 5,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.0,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "verdict_lr_synth": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 0.8,
+                "f1": 0.8888888888888888,
+                "support": 5
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                4,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.8,
+            "fpr_on_safe": 0.2,
+            "n_safe": 5,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 5,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "verdict_lr_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 0.4,
+                "f1": 0.5714285714285714,
+                "support": 5
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                2,
+                3
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.4,
+            "fpr_on_safe": 0.6,
+            "n_safe": 5,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 5,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "tactics_lr_synth": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 5
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                5,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 1.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 5,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.0,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "tactics_lr_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 5
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                5,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 1.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 5,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.0,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "style_only_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 0.6,
+                "f1": 0.75,
+                "support": 5
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                3,
+                2
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.6,
+            "fpr_on_safe": 0.4,
+            "n_safe": 5,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 5,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "source_only_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 5
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                5,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 1.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 5,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 5,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 5,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          }
+        }
+      },
+      "external_scam": {
+        "n_rows": 3511,
+        "too_small_for_claims": false,
+        "scam_rate": 1.0,
+        "style_mix": {
+          "english": 3509,
+          "roman_hinglish": 2
+        },
+        "tag_support": {
+          "otp_or_pin_request": 0,
+          "urgency_threat": 2479,
+          "bank_kyc_impersonation": 1340,
+          "authority_impersonation": 2634,
+          "payment_or_upi_request": 0,
+          "suspicious_link": 3511,
+          "prize_or_lottery": 0,
+          "job_or_task_scam": 0,
+          "investment_or_trading_scam": 0,
+          "loan_app_harassment": 0,
+          "parcel_courier_scam": 402,
+          "utility_disconnection_scam": 336,
+          "relative_in_trouble": 30
+        },
+        "validated_tags": [
+          "urgency_threat",
+          "bank_kyc_impersonation",
+          "authority_impersonation",
+          "suspicious_link",
+          "parcel_courier_scam",
+          "utility_disconnection_scam",
+          "relative_in_trouble"
+        ],
+        "unvalidated_tags": [
+          "otp_or_pin_request",
+          "payment_or_upi_request",
+          "prize_or_lottery",
+          "job_or_task_scam",
+          "investment_or_trading_scam",
+          "loan_app_harassment"
+        ],
+        "models": {
+          "majority": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 3511
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                3511
+              ]
+            ],
+            "scam_recall": 1.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3511,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "keyword": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 0.02307035032754201,
+                "f1": 0.04510022271714922,
+                "support": 3511
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                1543,
+                81
+              ]
+            ],
+            "scam_recall": 0.02307035032754201,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3511,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": 0.1622127659574468,
+              "macro_f1": 0.18346728023180367,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.14817572598659717,
+                "bank_kyc_impersonation": 0.08701754385964912,
+                "authority_impersonation": 0.032799105478941486,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.27129492860659776,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.35555555555555557,
+                "utility_disconnection_scam": 0.011049723756906077,
+                "relative_in_trouble": 0.3783783783783784
+              },
+              "headline_tags": [
+                "urgency_threat",
+                "bank_kyc_impersonation",
+                "authority_impersonation",
+                "suspicious_link",
+                "parcel_courier_scam",
+                "utility_disconnection_scam",
+                "relative_in_trouble"
+              ],
+              "rows_with_gold_tags": 3511,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "verdict_lr_synth": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 0.6268869268014811,
+                "f1": 0.7706582633053222,
+                "support": 3511
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                1310,
+                2201
+              ]
+            ],
+            "scam_recall": 0.6268869268014811,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3511,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "verdict_lr_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 0.9792082027912276,
+                "f1": 0.9894948913512736,
+                "support": 3511
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                73,
+                3438
+              ]
+            ],
+            "scam_recall": 0.9792082027912276,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3511,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "tactics_lr_synth": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 3511
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                3511,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3511,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": 0.17312186978297162,
+              "macro_f1": 0.07949710606002529,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.5564797424201771,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [
+                "urgency_threat",
+                "bank_kyc_impersonation",
+                "authority_impersonation",
+                "suspicious_link",
+                "parcel_courier_scam",
+                "utility_disconnection_scam",
+                "relative_in_trouble"
+              ],
+              "rows_with_gold_tags": 3511,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "tactics_lr_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 3511
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                3511,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3511,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": 0.34913245873889126,
+              "macro_f1": 0.11934900542495479,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.8354430379746836,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [
+                "urgency_threat",
+                "bank_kyc_impersonation",
+                "authority_impersonation",
+                "suspicious_link",
+                "parcel_courier_scam",
+                "utility_disconnection_scam",
+                "relative_in_trouble"
+              ],
+              "rows_with_gold_tags": 3511,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "style_only_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 0.9994303617203076,
+                "f1": 0.9997150997150998,
+                "support": 3511
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                2,
+                3509
+              ]
+            ],
+            "scam_recall": 0.9994303617203076,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3511,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "source_only_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 3511
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                0
+              ],
+              [
+                0,
+                3511
+              ]
+            ],
+            "scam_recall": 1.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 0,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3511,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          }
+        }
+      },
+      "public_ham_english": {
+        "n_rows": 345,
+        "too_small_for_claims": false,
+        "scam_rate": 0.0,
+        "style_mix": {
+          "english": 345
+        },
+        "tag_support": {
+          "otp_or_pin_request": 0,
+          "urgency_threat": 0,
+          "bank_kyc_impersonation": 0,
+          "authority_impersonation": 0,
+          "payment_or_upi_request": 0,
+          "suspicious_link": 0,
+          "prize_or_lottery": 0,
+          "job_or_task_scam": 0,
+          "investment_or_trading_scam": 0,
+          "loan_app_harassment": 0,
+          "parcel_courier_scam": 0,
+          "utility_disconnection_scam": 0,
+          "relative_in_trouble": 0
+        },
+        "validated_tags": [],
+        "unvalidated_tags": [
+          "otp_or_pin_request",
+          "urgency_threat",
+          "bank_kyc_impersonation",
+          "authority_impersonation",
+          "payment_or_upi_request",
+          "suspicious_link",
+          "prize_or_lottery",
+          "job_or_task_scam",
+          "investment_or_trading_scam",
+          "loan_app_harassment",
+          "parcel_courier_scam",
+          "utility_disconnection_scam",
+          "relative_in_trouble"
+        ],
+        "models": {
+          "majority": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                345
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 1.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 345,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "keyword": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 0.9855072463768116,
+                "f1": 0.9927007299270073,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                340,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.9855072463768116,
+            "fpr_on_safe": 0.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 345,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.0,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "verdict_lr_synth": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 0.9304347826086956,
+                "f1": 0.963963963963964,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                321,
+                24
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.9304347826086956,
+            "fpr_on_safe": 0.06956521739130435,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 345,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 345,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "verdict_lr_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 0.991304347826087,
+                "f1": 0.9956331877729258,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                342,
+                3
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.991304347826087,
+            "fpr_on_safe": 0.008695652173913044,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 345,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 345,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "tactics_lr_synth": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                345,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 1.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 345,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.0,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "tactics_lr_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                345,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 1.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 345,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.0,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "style_only_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                0,
+                345
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 1.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 345,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 345,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          },
+          "source_only_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 0
+              }
+            },
+            "macro_f1": null,
+            "balanced_accuracy": null,
+            "single_class": true,
+            "confusion_matrix": [
+              [
+                345,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 1.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 345,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": "n/a (too few negatives)",
+              "n_negatives": 345,
+              "available": false
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": null,
+            "macro_f1_ci95": [
+              null,
+              null
+            ]
+          }
+        }
+      },
+      "real_english_combined": {
+        "n_rows": 3856,
+        "too_small_for_claims": false,
+        "scam_rate": 0.9105290456431535,
+        "title": "English real data, optimistic: sources differ in era and style, NOT a Hinglish claim",
+        "style_mix": {
+          "english": 3854,
+          "roman_hinglish": 2
+        },
+        "tag_support": {
+          "otp_or_pin_request": 0,
+          "urgency_threat": 2479,
+          "bank_kyc_impersonation": 1340,
+          "authority_impersonation": 2634,
+          "payment_or_upi_request": 0,
+          "suspicious_link": 3511,
+          "prize_or_lottery": 0,
+          "job_or_task_scam": 0,
+          "investment_or_trading_scam": 0,
+          "loan_app_harassment": 0,
+          "parcel_courier_scam": 402,
+          "utility_disconnection_scam": 336,
+          "relative_in_trouble": 30
+        },
+        "validated_tags": [
+          "urgency_threat",
+          "bank_kyc_impersonation",
+          "authority_impersonation",
+          "suspicious_link",
+          "parcel_courier_scam",
+          "utility_disconnection_scam",
+          "relative_in_trouble"
+        ],
+        "unvalidated_tags": [
+          "otp_or_pin_request",
+          "payment_or_upi_request",
+          "prize_or_lottery",
+          "job_or_task_scam",
+          "investment_or_trading_scam",
+          "loan_app_harassment"
+        ],
+        "models": {
+          "majority": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.9105290456431535,
+                "recall": 1.0,
+                "f1": 0.9531695398398262,
+                "support": 3511
+              }
+            },
+            "macro_f1": 0.4765847699199131,
+            "balanced_accuracy": 0.5,
+            "single_class": false,
+            "confusion_matrix": [
+              [
+                0,
+                345
+              ],
+              [
+                0,
+                3511
+              ]
+            ],
+            "scam_recall": 1.0,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 1.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3856,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false,
+              "auroc_ci95": [
+                null,
+                null
+              ],
+              "pr_auc_ci95": [
+                null,
+                null
+              ]
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": 0.47661446273020536,
+            "macro_f1_ci95": [
+              0.47430129516019087,
+              0.47913008239902743
+            ]
+          },
+          "keyword": {
+            "per_class": {
+              "safe": {
+                "precision": 0.18056293149229952,
+                "recall": 0.9855072463768116,
+                "f1": 0.3052064631956912,
+                "support": 345
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 0.02307035032754201,
+                "f1": 0.04510022271714922,
+                "support": 3511
+              }
+            },
+            "macro_f1": 0.1751533429564202,
+            "balanced_accuracy": 0.5042887983521769,
+            "single_class": false,
+            "confusion_matrix": [
+              [
+                340,
+                0
+              ],
+              [
+                1543,
+                81
+              ]
+            ],
+            "scam_recall": 0.02307035032754201,
+            "safe_recall": 0.9855072463768116,
+            "fpr_on_safe": 0.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3856,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false,
+              "auroc_ci95": [
+                null,
+                null
+              ],
+              "pr_auc_ci95": [
+                null,
+                null
+              ]
+            },
+            "tactics": {
+              "micro_f1": 0.16218515997277058,
+              "macro_f1": 0.18344820719126606,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.14817572598659717,
+                "bank_kyc_impersonation": 0.08701754385964912,
+                "authority_impersonation": 0.032799105478941486,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.27116141732283466,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.35555555555555557,
+                "utility_disconnection_scam": 0.011049723756906077,
+                "relative_in_trouble": 0.3783783783783784
+              },
+              "headline_tags": [
+                "urgency_threat",
+                "bank_kyc_impersonation",
+                "authority_impersonation",
+                "suspicious_link",
+                "parcel_courier_scam",
+                "utility_disconnection_scam",
+                "relative_in_trouble"
+              ],
+              "rows_with_gold_tags": 3511,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": 0.10615386199317874,
+            "macro_f1_ci95": [
+              0.09733541639101805,
+              0.11528076826906947
+            ]
+          },
+          "verdict_lr_synth": {
+            "per_class": {
+              "safe": {
+                "precision": 0.19681177191906807,
+                "recall": 0.9304347826086956,
+                "f1": 0.3248987854251012,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.9892134831460674,
+                "recall": 0.6268869268014811,
+                "f1": 0.7674337517433751,
+                "support": 3511
+              }
+            },
+            "macro_f1": 0.5461662685842381,
+            "balanced_accuracy": 0.7786608547050884,
+            "single_class": false,
+            "confusion_matrix": [
+              [
+                321,
+                24
+              ],
+              [
+                1310,
+                2201
+              ]
+            ],
+            "scam_recall": 0.6268869268014811,
+            "safe_recall": 0.9304347826086956,
+            "fpr_on_safe": 0.06956521739130435,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3856,
+            "probability": {
+              "auroc": 0.8634535765441118,
+              "pr_auc": 0.9847821383554429,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": 0.6018228424950157,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 345,
+              "available": true,
+              "auroc_ci95": [
+                0.8477433091893483,
+                0.8787927196475329
+              ],
+              "pr_auc_ci95": [
+                0.9819977770493468,
+                0.9872918211834293
+              ]
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": 0.5458931363992442,
+            "macro_f1_ci95": [
+              0.5294112525907184,
+              0.5621138386780234
+            ]
+          },
+          "verdict_lr_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.8240963855421687,
+                "recall": 0.991304347826087,
+                "f1": 0.9,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.999128160418483,
+                "recall": 0.9792082027912276,
+                "f1": 0.9890678941311852,
+                "support": 3511
+              }
+            },
+            "macro_f1": 0.9445339470655927,
+            "balanced_accuracy": 0.9852562753086573,
+            "single_class": false,
+            "confusion_matrix": [
+              [
+                342,
+                3
+              ],
+              [
+                73,
+                3438
+              ]
+            ],
+            "scam_recall": 0.9792082027912276,
+            "safe_recall": 0.991304347826087,
+            "fpr_on_safe": 0.008695652173913044,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3856,
+            "probability": {
+              "auroc": 0.9976215537916032,
+              "pr_auc": 0.9997694866815936,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": 0.9914554258046141,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 345,
+              "available": true,
+              "auroc_ci95": [
+                0.9964284838538915,
+                0.9986901788817124
+              ],
+              "pr_auc_ci95": [
+                0.9996534499182599,
+                0.9998753688310688
+              ]
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": 0.9447287879516068,
+            "macro_f1_ci95": [
+              0.9315639957559638,
+              0.9567650462962962
+            ]
+          },
+          "tactics_lr_synth": {
+            "per_class": {
+              "safe": {
+                "precision": 0.08947095435684647,
+                "recall": 1.0,
+                "f1": 0.16424660795048798,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 3511
+              }
+            },
+            "macro_f1": 0.08212330397524399,
+            "balanced_accuracy": 0.5,
+            "single_class": false,
+            "confusion_matrix": [
+              [
+                345,
+                0
+              ],
+              [
+                3511,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 1.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3856,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false,
+              "auroc_ci95": [
+                null,
+                null
+              ],
+              "pr_auc_ci95": [
+                null,
+                null
+              ]
+            },
+            "tactics": {
+              "micro_f1": 0.17299190925014596,
+              "macro_f1": 0.07930559804221474,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.5551391862955032,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [
+                "urgency_threat",
+                "bank_kyc_impersonation",
+                "authority_impersonation",
+                "suspicious_link",
+                "parcel_courier_scam",
+                "utility_disconnection_scam",
+                "relative_in_trouble"
+              ],
+              "rows_with_gold_tags": 3511,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": 0.08200605753616089,
+            "macro_f1_ci95": [
+              0.07418967587034814,
+              0.08906213087644696
+            ]
+          },
+          "tactics_lr_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.08947095435684647,
+                "recall": 1.0,
+                "f1": 0.16424660795048798,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 3511
+              }
+            },
+            "macro_f1": 0.08212330397524399,
+            "balanced_accuracy": 0.5,
+            "single_class": false,
+            "confusion_matrix": [
+              [
+                345,
+                0
+              ],
+              [
+                3511,
+                0
+              ]
+            ],
+            "scam_recall": 0.0,
+            "safe_recall": 1.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3856,
+            "probability": {
+              "auroc": null,
+              "pr_auc": null,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": null,
+              "recall_at_5pct_fpr": null,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 0,
+              "available": false,
+              "auroc_ci95": [
+                null,
+                null
+              ],
+              "pr_auc_ci95": [
+                null,
+                null
+              ]
+            },
+            "tactics": {
+              "micro_f1": 0.3489601691928093,
+              "macro_f1": 0.11920816876986803,
+              "per_tag_f1": {
+                "otp_or_pin_request": 0.0,
+                "urgency_threat": 0.8344571813890762,
+                "bank_kyc_impersonation": 0.0,
+                "authority_impersonation": 0.0,
+                "payment_or_upi_request": 0.0,
+                "suspicious_link": 0.0,
+                "prize_or_lottery": 0.0,
+                "job_or_task_scam": 0.0,
+                "investment_or_trading_scam": 0.0,
+                "loan_app_harassment": 0.0,
+                "parcel_courier_scam": 0.0,
+                "utility_disconnection_scam": 0.0,
+                "relative_in_trouble": 0.0
+              },
+              "headline_tags": [
+                "urgency_threat",
+                "bank_kyc_impersonation",
+                "authority_impersonation",
+                "suspicious_link",
+                "parcel_courier_scam",
+                "utility_disconnection_scam",
+                "relative_in_trouble"
+              ],
+              "rows_with_gold_tags": 3511,
+              "available": true
+            },
+            "macro_f1_bootstrap_mean": 0.08200605753616089,
+            "macro_f1_ci95": [
+              0.07418967587034814,
+              0.08906213087644696
+            ]
+          },
+          "style_only_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 0.0,
+                "recall": 0.0,
+                "f1": 0.0,
+                "support": 345
+              },
+              "scam": {
+                "precision": 0.9104826154644525,
+                "recall": 0.9994303617203076,
+                "f1": 0.9528852681602172,
+                "support": 3511
+              }
+            },
+            "macro_f1": 0.4764426340801086,
+            "balanced_accuracy": 0.4997151808601538,
+            "single_class": false,
+            "confusion_matrix": [
+              [
+                0,
+                345
+              ],
+              [
+                2,
+                3509
+              ]
+            ],
+            "scam_recall": 0.9994303617203076,
+            "safe_recall": 0.0,
+            "fpr_on_safe": 1.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3856,
+            "probability": {
+              "auroc": 0.4997151808601538,
+              "pr_auc": 0.9104826419128597,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": 0.0,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 345,
+              "available": true,
+              "auroc_ci95": [
+                0.4992865296803653,
+                0.5
+              ],
+              "pr_auc_ci95": [
+                0.9022049359540388,
+                0.9197820253054646
+              ]
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": 0.47647632568352427,
+            "macro_f1_ci95": [
+              0.47415791626892134,
+              0.4789189189189189
+            ]
+          },
+          "source_only_plus": {
+            "per_class": {
+              "safe": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 345
+              },
+              "scam": {
+                "precision": 1.0,
+                "recall": 1.0,
+                "f1": 1.0,
+                "support": 3511
+              }
+            },
+            "macro_f1": 1.0,
+            "balanced_accuracy": 1.0,
+            "single_class": false,
+            "confusion_matrix": [
+              [
+                345,
+                0
+              ],
+              [
+                0,
+                3511
+              ]
+            ],
+            "scam_recall": 1.0,
+            "safe_recall": 1.0,
+            "fpr_on_safe": 0.0,
+            "n_safe": 345,
+            "hard_negatives": 0,
+            "fpr_on_hard_negatives": null,
+            "n_rows": 3856,
+            "probability": {
+              "auroc": 1.0,
+              "pr_auc": 1.0,
+              "recall_at_1pct_fpr": null,
+              "recall_at_1pct_fpr_note": "n/a (too few negatives)",
+              "recall_at_5pct_fpr": 1.0,
+              "recall_at_5pct_fpr_note": null,
+              "n_negatives": 345,
+              "available": true,
+              "auroc_ci95": [
+                1.0,
+                1.0
+              ],
+              "pr_auc_ci95": [
+                1.0,
+                1.0
+              ]
+            },
+            "tactics": {
+              "micro_f1": null,
+              "macro_f1": null,
+              "per_tag_f1": {},
+              "headline_tags": [],
+              "rows_with_gold_tags": 0,
+              "available": false
+            },
+            "macro_f1_bootstrap_mean": 1.0,
+            "macro_f1_ci95": [
+              1.0,
+              1.0
+            ]
+          }
+        },
+        "source_origin": {
+          "available": true,
+          "n_train": 10000,
+          "val": {
+            "n": 3856,
+            "accuracy": 0.9603215767634855,
+            "auroc": 0.9971980401140927
+          },
+          "test_real": {
+            "n": 3856,
+            "accuracy": 0.9683609958506224,
+            "auroc": 0.9966688544078858
+          }
+        },
+        "source_origin_warning": "AUROC close to source-origin AUROC means the score may reflect dataset recognition, not scam detection."
+      }
+    }
+  }
+}
