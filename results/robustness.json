@@ -239,32 +239,32 @@
     "recall_gemini": null,
     "examples": [
       {
-        "english": "Dear <NAME> user, Your A/C will be blocked...",
-        "hinglish": "Dear <NAME> user, aapka A/C block ho jayega...",
+        "english": "[withheld 8 words]",
+        "hinglish": "[withheld 8 words]",
         "p_english": 0.9999683677703606,
         "p_hinglish": 0.9992802554178339
       },
       {
-        "english": "Tinder code is <US_DRIVER_LICENSE> Don't share...",
-        "hinglish": "Tinder code hai <US_DRIVER_LICENSE> Don't share...",
+        "english": "[withheld 6 words]",
+        "hinglish": "[withheld 6 words]",
         "p_english": 0.9959087372408171,
         "p_hinglish": 0.9876987088137199
       },
       {
-        "english": "Dear <NAME> Trader, Update your <NAMED_ENTITY> to avoid termination of wallet. To update click <URL> to update and secure account.",
-        "hinglish": "Dear <NAME> Trader, Update aapka <NAMED_ENTITY> se bachne ke liye termination of wallet. To update click <URL> to update aur surakshit account.",
+        "english": "[withheld 20 words]",
+        "hinglish": "[withheld 22 words]",
         "p_english": 0.9999999999209797,
         "p_hinglish": 0.9999999836182976
       },
       {
-        "english": "Your bank account has been blocked. Log in here right now <URL> or the account will be closed!",
-        "hinglish": "aapka bank account has been block. Log in here abhi <URL> ya the account band ho jayega!",
+        "english": "[withheld 18 words]",
+        "hinglish": "[withheld 17 words]",
         "p_english": 0.9999984715229387,
         "p_hinglish": 0.999998796135497
       },
       {
-        "english": "We were not able to deliver your package, so here's how you can manage it <URL>",
-        "hinglish": "hum were nahi able to deliver aapka package, so here's how aap can manage it <URL>",
+        "english": "[withheld 16 words]",
+        "hinglish": "[withheld 16 words]",
         "p_english": 0.9999942480619143,
         "p_hinglish": 0.9990703303358553
       }
@@ -292,11 +292,11 @@
       }
     },
     "examples_flagged": [
-      "Just checking, cheque book request received, it will be delivered to your registered address",
-      "Hi both, your fixed deposit matures next month, the renewal form is at the branch - Neha",
-      "Hi both, your parcel is at the security desk, the guard has it since 4 pm see you soon. - Rohit",
-      "Just checking, cheque book request received, it will be delivered to your registered address - Sana",
-      "Just checking, your parcel is at the security desk, the guard has it since 4 pm"
+      "[withheld 14 words / 92 chars]",
+      "[withheld 17 words / 88 chars]",
+      "[withheld 21 words / 95 chars]",
+      "[withheld 16 words / 99 chars]",
+      "[withheld 16 words / 79 chars]"
     ],
     "too_small_for_claims": false,
     "frozen": true,

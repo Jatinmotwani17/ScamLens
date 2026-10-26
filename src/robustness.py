@@ -702,7 +702,11 @@ def run_transfer(predictor, temperature: float, t_high: float,
         "gemini_n": int(len(gemini_scores)) if gemini_scores is not None else 0,
         "recall_gemini": (_recall_at(gemini_scores, t_high)
                           if gemini_scores is not None else None),
-        "examples": [{"english": a, "hinglish": b,
+        # PRIVACY: the JSON artefact must not carry probe text either, so only
+        # the shape (word count) is stored. Scores stay, which is what the
+        # report actually argues from.
+        "examples": [{"english": f"[withheld {len(str(a).split())} words]",
+                      "hinglish": f"[withheld {len(str(b).split())} words]",
                       "p_english": float(pe), "p_hinglish": float(ph)}
                      for a, b, pe, ph in zip(source_en, hinglish,
                                              en_scores, hi_scores)
@@ -749,7 +753,10 @@ def run_safe_chat(predictor, temperature: float, t_high: float,
         "max_train_sim": float(np.max(sim)) if len(sim) else None,
         "mean_train_sim": float(np.mean(sim)) if len(sim) else None,
         "by_style": by_style,
-        "examples_flagged": probe.loc[flagged, "text"].head(5).tolist(),
+        # PRIVACY: shapes only - never the probe text itself.
+        "examples_flagged": [
+            f"[withheld {len(str(t).split())} words / {len(str(t))} chars]"
+            for t in probe.loc[flagged, "text"].head(5).tolist()],
         "too_small_for_claims": too_small(len(probe)),
         "frozen": True,
         "source_file": str(data_path("safe_chat_probe")),
@@ -939,8 +946,7 @@ def markdown(result: dict) -> list[str]:
             for ex in transfer["examples"]:
                 # PRIVACY: scores only. The probe text itself is withheld.
                 lines += [f"> **EN** {ex['p_english']:.3f} -> **HI** "
-                          f"{ex['p_hinglish']:.3f} "
-                          f"({len(str(ex['english']).split())} words)", ""]
+                          f"{ex['p_hinglish']:.3f} {ex['english']}", ""]
 
     safe = result["safe_chat"]
     lines += ["### (c) Fresh safe-chat probe - false positive rate", "",
@@ -962,9 +968,8 @@ def markdown(result: dict) -> list[str]:
     ]
     if safe["examples_flagged"]:
         lines += ["Safe messages the model calls scam:", ""]
-        # PRIVACY: count and lengths only, never the probe text.
-        lines += [f"> flagged probe: {len(str(text).split())} words, "
-                  f"{len(str(text))} chars" for text in safe["examples_flagged"]]
+        # PRIVACY: the list already holds shape descriptors, never text.
+        lines += [f"> flagged probe: {text}" for text in safe["examples_flagged"]]
         lines.append("")
     return lines
 

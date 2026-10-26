@@ -358,15 +358,15 @@ Fixed operating point: `t_high` = **0.039**, temperature = 0.461 (fitted on vali
 
 Examples for manual review (English -> derived Hinglish):
 
-> **EN** 1.000 -> **HI** 0.999 (8 words)
+> **EN** 1.000 -> **HI** 0.999 [withheld 8 words]
 
-> **EN** 0.996 -> **HI** 0.988 (6 words)
+> **EN** 0.996 -> **HI** 0.988 [withheld 6 words]
 
-> **EN** 1.000 -> **HI** 1.000 (20 words)
+> **EN** 1.000 -> **HI** 1.000 [withheld 20 words]
 
-> **EN** 1.000 -> **HI** 1.000 (18 words)
+> **EN** 1.000 -> **HI** 1.000 [withheld 18 words]
 
-> **EN** 1.000 -> **HI** 0.999 (16 words)
+> **EN** 1.000 -> **HI** 0.999 [withheld 16 words]
 
 ### (c) Fresh safe-chat probe - false positive rate
 
@@ -380,11 +380,11 @@ Novelty check: the highest similarity of any probe message to a training row is 
 
 Safe messages the model calls scam:
 
-> flagged probe: 14 words, 92 chars
-> flagged probe: 17 words, 88 chars
-> flagged probe: 21 words, 95 chars
-> flagged probe: 16 words, 99 chars
-> flagged probe: 16 words, 79 chars
+> flagged probe: [withheld 14 words / 92 chars]
+> flagged probe: [withheld 17 words / 88 chars]
+> flagged probe: [withheld 21 words / 95 chars]
+> flagged probe: [withheld 16 words / 99 chars]
+> flagged probe: [withheld 16 words / 79 chars]
 
 ---
 
